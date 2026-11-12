@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#fdeee8">
+<meta name="color-scheme" content="light">
+<title>Пекинские пазлы</title>
+<style>
+@font-face{font-family:"Nunito";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/nunito-cyrillic-600-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/nunito-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/nunito-cyrillic-800-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/nunito-latin-800-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:900;font-display:swap;src:url(fonts/nunito-cyrillic-900-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:900;font-display:swap;src:url(fonts/nunito-latin-900-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Ma Shan Zheng";font-style:normal;font-weight:400;font-display:block;src:url(fonts/mashanzheng-sub.woff2) format("woff2")}
+</style>
+<style>
+/* Layout: one-screen app — home (campaign chapters / collection), square lacquer-framed board, modal sheets for shop, rewards and daily bonus */
+:root{
+  --paper:#fdeee8;
+  --paper-2:#fff8f4;
+  --lacquer:#c8323a;
+  --lacquer-d:#9e2229;
+  --jade:#3f9e8a;
+  --gold:#eab04a;
+  --ink:#3a2330;
+  --ink-soft:#7d5f68;
+  --line:#efcfc6;
+  --frame:#c8323a;--frame-edge:#9e2229;--frame-knob:#eab04a;
+  --f-display:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-brush:"Ma Shan Zheng","KaiTi","STKaiti","Kaiti SC",serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-weight:600;font-size:15px;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;
+  background-image:radial-gradient(circle at 12px 12px, rgba(200,50,58,.06) 2px, transparent 2.5px);background-size:28px 28px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:3px solid var(--jade);outline-offset:2px}
+button[disabled]{cursor:default;opacity:.55}
+.screen{height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.coin{width:20px;height:20px;flex:none;display:inline-block;vertical-align:-4px}
+.muted{color:var(--ink-soft);font-size:14px;line-height:1.45;margin:6px 0 12px}
+
+/* HOME */
+#home{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:980px;width:100%;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hero{display:flex;align-items:center;gap:14px;min-width:0}
+.seal{flex:none;width:64px;height:64px;background:var(--lacquer);color:var(--paper-2);border-radius:10px;display:grid;place-items:center;
+  font-family:var(--f-brush);font-size:26px;line-height:.9;writing-mode:vertical-rl;letter-spacing:2px;transform:rotate(-4deg);
+  box-shadow:inset 0 0 0 3px var(--lacquer),inset 0 0 0 5px rgba(255,248,244,.7)}
+.hero h1{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(26px,5.5vw,40px);line-height:1;text-wrap:balance;letter-spacing:-.5px}
+.hero p{margin:4px 0 0;color:var(--ink-soft);font-size:14px}
+.wallet{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:2px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill .coin{width:22px;height:22px}
+.shopbtn{background:var(--jade);color:#fff;border-radius:999px;padding:9px 16px;font-weight:900;box-shadow:0 6px 14px -8px rgba(63,158,138,.9)}
+.tabs{display:flex;gap:4px;background:var(--paper-2);border:2px solid var(--line);border-radius:14px;padding:4px;max-width:100%;overflow-x:auto}
+.tab{padding:8px 14px;border-radius:10px;font-weight:900;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--lacquer);color:var(--paper-2)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 14px}
+.label{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.cta{display:flex;align-items:center;gap:14px;background:var(--lacquer);color:var(--paper-2);border-radius:18px;padding:10px 18px 10px 10px;width:100%;text-align:left;box-shadow:0 12px 26px -14px rgba(158,34,41,.85)}
+.cta img{width:64px;height:64px;border-radius:10px;flex:none}
+.cta b{font-size:20px;display:block;font-weight:900}
+.cta span{opacity:.85;font-size:13px}
+.cta .go{margin-left:auto;font-size:28px;font-weight:900;opacity:1}
+.cta div{min-width:0}
+.chapter{margin-top:22px}
+.chapter h3{margin:0 0 10px;font-size:16px;font-weight:900;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.chapter h3 small{font-size:11px;color:var(--ink-soft);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.lv{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.lvl{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--line);max-width:100%}
+.lvl img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(.55) brightness(.92)}
+.lvl.done img{filter:none}
+.lvl .num{position:absolute;left:6px;top:3px;font-weight:900;font-size:16px;color:#fff;text-shadow:0 1px 3px rgba(58,35,48,.9)}
+.lvl .st{position:absolute;left:0;right:0;bottom:0;background:rgba(58,35,48,.6);color:#ffd75a;font-size:11px;text-align:center;padding:2px 0;letter-spacing:1px}
+.lvl.boss{box-shadow:inset 0 0 0 3px var(--gold)}
+.lvl.boss::after{content:"Босс";position:absolute;right:4px;top:4px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:900;padding:1px 5px;border-radius:6px;text-transform:uppercase}
+.lvl.next{box-shadow:inset 0 0 0 3px var(--jade),0 0 0 3px var(--jade)}
+.lvl.locked img,.card.locked img{filter:grayscale(1) brightness(.55) blur(2px)}
+.lvl.locked{cursor:default}.lvl.boss.locked{box-shadow:none}.lvl.boss.locked::after{opacity:.55}.lvl.locked .num{opacity:.75}
+.lock{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.lock svg{width:34%;height:auto;filter:drop-shadow(0 1px 3px rgba(58,35,48,.6))}
+.card{position:relative}.card .lock{bottom:auto;aspect-ratio:1;inset:8px 8px auto 8px}.card .lock svg{width:22%}
+.card.locked .nm{color:var(--ink-soft)}.card.locked .dots{display:none}
+.card .hint-open{font-size:12px;color:var(--ink-soft);padding:0 4px;font-weight:700;line-height:1.3}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:999px;background:var(--paper-2);border:2px solid var(--line);font-weight:800;font-size:14px}
+.chip small{font-weight:600;color:var(--ink-soft);margin-left:4px;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--lacquer);border-color:var(--lacquer);color:var(--paper-2)}
+.chip[aria-pressed="true"] small{color:rgba(255,248,244,.8)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.card{background:var(--paper-2);border-radius:16px;padding:8px 8px 12px;text-align:left;box-shadow:0 2px 0 var(--line),0 8px 20px -12px rgba(58,35,48,.35);display:flex;flex-direction:column;gap:8px;min-width:0}
+.card img{width:100%;aspect-ratio:1;border-radius:10px;display:block;max-width:100%}
+.card .nm{font-weight:900;font-size:15px;padding:0 4px;line-height:1.2}
+.dots{display:flex;gap:4px;padding:0 4px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--gold);box-shadow:0 0 0 1.5px #c98a1f inset}
+@media (max-width:560px){.grid{gap:8px}.card{padding:5px 5px 9px;border-radius:12px}.card .nm{font-size:12.5px}.dots i{width:7px;height:7px}.hero p{display:none}}
+.foot{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.testchip{font-size:12px;color:var(--ink-soft);max-width:52ch}
+
+/* GAME */
+#game{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:center;gap:10px;max-width:720px;width:100%;margin:0 auto}
+.iconbtn{width:44px;height:44px;border-radius:12px;background:var(--paper-2);border:2px solid var(--line);display:grid;place-items:center;flex:none;font-size:20px;font-weight:900}
+.ttl{flex:1;min-width:0}
+.ttl b{display:block;font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl span{font-size:13px;color:var(--ink-soft);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stats{display:flex;gap:6px}
+.stat{background:var(--paper-2);border:2px solid var(--line);border-radius:12px;padding:4px 10px;text-align:center;min-width:58px}
+.stat small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:800}
+.stat b{font-variant-numeric:tabular-nums;font-size:16px;font-weight:900}
+.stage{flex:1;display:grid;place-items:center;min-height:0;padding-block:10px}
+.frame{position:relative;padding:10px;background:var(--frame);border-radius:18px;box-shadow:inset 0 0 0 3px var(--frame-edge),0 14px 30px -14px rgba(58,35,48,.6)}
+.frame::before,.frame::after{content:"";position:absolute;width:14px;height:14px;background:var(--frame-knob);border-radius:50%;top:-5px;box-shadow:0 0 0 3px var(--frame-edge)}
+.frame::before{left:-5px}.frame::after{right:-5px}
+#board{display:block;border-radius:8px;touch-action:none;background:#e9d3cb}
+.bottom{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:720px;width:100%;margin:0 auto}
+.btn{padding:12px 16px;border-radius:14px;font-weight:900;background:var(--paper-2);border:2px solid var(--line);font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--jade);border-color:var(--jade);color:#fff}
+.btn.red{background:var(--lacquer);border-color:var(--lacquer);color:var(--paper-2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.cnt{background:var(--lacquer);color:#fff;border-radius:99px;padding:0 8px;font-size:12px;min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.ad{display:inline-block;font-size:10px;font-weight:900;background:var(--ink);color:var(--paper-2);border-radius:5px;padding:2px 5px;letter-spacing:.06em}
+.btn.primary .ad,.buy .ad{background:rgba(255,255,255,.25);color:#fff}
+.progress{height:8px;max-width:720px;width:100%;margin:8px auto 0;background:var(--line);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--jade);width:0;transition:width .3s}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(58,35,48,.5);display:grid;place-items:center;padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));z-index:20}
+.modal{background:var(--paper-2);border-radius:22px;padding:20px;max-width:420px;width:100%;max-height:100%;overflow:auto;animation:pop .32s cubic-bezier(.2,1.4,.4,1)}
+.modal.wide{max-width:680px}
+.modal.center{text-align:center}
+@keyframes pop{from{transform:scale(.88);opacity:.4}}
+.modal h2{margin:0;font-size:24px;font-weight:900;text-wrap:balance}
+.col{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.row .btn{flex:1}
+.stars{display:flex;justify-content:center;gap:4px;font-size:44px;line-height:1;margin:8px 0 2px}
+.stars i{font-style:normal;color:var(--line)}
+.stars i.on{color:var(--gold);animation:pop .4s both}
+.stars i.on:nth-child(2){animation-delay:.15s}.stars i.on:nth-child(3){animation-delay:.3s}
+.reward{display:flex;justify-content:center;align-items:center;gap:6px;font-weight:900;font-size:24px;margin:4px 0 10px;font-variant-numeric:tabular-nums}
+.reward .coin{width:26px;height:26px}
+.res{display:flex;justify-content:center;gap:10px;margin:0 0 12px}
+.fact{background:var(--paper);border-radius:14px;padding:12px 14px;text-align:left;font-size:14px;line-height:1.5}
+.fact b{color:var(--lacquer);display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.shop-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.shop-head h2{flex:1}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:14px}
+.item{background:var(--paper);border-radius:16px;padding:14px 12px 12px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.item.hot{box-shadow:0 0 0 2px var(--lacquer)}
+.item .ic{height:62px;display:grid;place-items:center}
+.item .ic svg{height:58px;width:auto}
+.item b{font-size:15px;font-weight:900;line-height:1.2}
+.item p{margin:0;font-size:12.5px;color:var(--ink-soft);line-height:1.35;flex:1}
+.buy{margin-top:4px;padding:10px;border-radius:12px;background:var(--jade);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;gap:6px;font-variant-numeric:tabular-nums}
+.buy.coins{background:var(--gold);color:var(--ink)}
+.buy img{width:18px;height:18px}
+.item .tag{position:absolute;top:-9px;right:10px;background:var(--lacquer);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:99px}
+.swatch{display:block;width:56px;height:56px;border-radius:14px}
+.wheelbtn{position:relative;background:var(--gold);color:var(--ink);box-shadow:0 6px 14px -8px rgba(201,138,31,.9)}
+.wheelbtn .dot{position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:var(--lacquer);box-shadow:0 0 0 2px var(--paper)}
+.prog3{display:flex;gap:6px;margin-top:2px}.prog3 i{flex:1;height:8px;border-radius:99px;background:var(--line)}.prog3 i.on{background:var(--jade)}
+.wheelwrap{position:relative;width:min(300px,72vw,52dvh);aspect-ratio:1;margin:14px auto 10px}
+.wheelwrap canvas{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 0 0 6px var(--lacquer),0 0 0 10px var(--gold),0 14px 30px -12px rgba(58,35,48,.6)}
+.wheelwrap .pin{position:absolute;left:50%;top:-14px;width:0;height:0;margin-left:-14px;border:14px solid transparent;border-top:26px solid var(--ink);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.wheelwrap .hub{position:absolute;left:50%;top:50%;width:18%;height:18%;transform:translate(-50%,-50%);border-radius:50%;background:var(--lacquer);box-shadow:inset 0 0 0 4px var(--gold);display:grid;place-items:center;color:var(--paper-2);font-family:var(--f-brush);font-size:clamp(16px,5vw,26px)}
+.boostbadge{display:inline-block;background:var(--jade);color:#fff;border-radius:99px;padding:2px 8px;font-size:12px;font-weight:900;margin-left:6px;vertical-align:2px}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:14px 0}
+.day{background:var(--paper);border-radius:10px;padding:6px 1px;text-align:center;font-size:10px;font-weight:800;color:var(--ink-soft)}
+.day b{display:block;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.day.past{opacity:.45}
+.day.today{background:var(--gold);color:var(--ink)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper-2);padding:10px 16px;border-radius:12px;font-weight:800;z-index:90;max-width:calc(100% - 32px);text-align:center}
+#mockad{position:fixed;inset:0;z-index:95;background:#1d1a22;color:#fff;display:grid;place-items:center;text-align:center;padding:16px}
+#mockad .ad{background:var(--gold);color:var(--ink);font-size:12px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
+/* big desktop screens: scale menus and dialogs up so they don't look tiny */
+@media (min-width:1600px) and (min-height:860px){#home .wrap{zoom:1.22}.overlay .modal{zoom:1.25}#game .top,#game .progress,#game .bottom{zoom:1.15}}
+@media (min-width:2200px) and (min-height:1200px){#home .wrap{zoom:1.5}.overlay .modal{zoom:1.5}#game .top,#game .progress,#game .bottom{zoom:1.35}}
+/* desktop: hover feedback for mouse users */
+@media (hover:hover) and (pointer:fine){
+  .btn,.buy,.chip,.tab,.shopbtn,.iconbtn,.cta,.card,.lvl:not(.locked){transition:transform .12s ease,filter .12s ease,box-shadow .12s ease}
+  .btn:not([disabled]):hover,.buy:not([disabled]):hover,.shopbtn:hover,.iconbtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .cta:hover,.card:hover,.lvl:not(.locked):hover{transform:translateY(-2px)}
+  .chip:hover,.tab:hover{filter:brightness(.97)}
+  #board{cursor:grab}#board:active{cursor:grabbing}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* ---------- loading screen ---------- */
+#splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--paper);background-image:radial-gradient(circle at 12px 12px, rgba(200,50,58,.07) 2px, transparent 2.5px);background-size:28px 28px;
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(16px,env(safe-area-inset-left,0px));
+  transition:opacity .45s ease,transform .45s ease}
+#splash.out{opacity:0;transform:scale(1.04);pointer-events:none}
+.sp-center{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;width:min(560px,100%)}
+.sp-mark{position:relative;width:clamp(96px,26vmin,156px);aspect-ratio:1;margin-bottom:clamp(14px,3vmin,24px)}
+.sp-seal{position:absolute;inset:0;background:var(--lacquer);color:var(--paper-2);border-radius:18%;display:grid;place-items:center;
+  font-family:var(--f-brush);font-size:clamp(40px,11vmin,66px);line-height:.92;writing-mode:vertical-rl;letter-spacing:3px;
+  box-shadow:inset 0 0 0 clamp(5px,1.4vmin,8px) var(--lacquer),inset 0 0 0 clamp(8px,2.2vmin,12px) rgba(255,248,244,.85),0 18px 30px -16px rgba(158,34,41,.85);
+  transform:rotate(-4deg);animation:sp-stamp .7s cubic-bezier(.2,1.5,.4,1) both}
+.sp-piece{position:absolute;right:-16%;bottom:-14%;width:44%;height:auto;animation:sp-piece .55s cubic-bezier(.3,1.6,.5,1) .55s both}
+.sp-title{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(28px,8vw,44px);line-height:1.05;letter-spacing:-.5px;color:var(--ink);text-wrap:balance;animation:sp-up .5s ease .25s both}
+.sp-sub{margin:6px 0 0;color:var(--ink-soft);font-size:clamp(14px,3.6vw,16px);animation:sp-up .5s ease .35s both}
+.sp-bar{width:min(260px,80%);height:12px;margin-top:clamp(18px,4vmin,30px);border-radius:99px;background:var(--line);overflow:hidden;box-shadow:inset 0 0 0 2px rgba(158,34,41,.12)}
+.sp-bar i{display:block;height:100%;width:4%;border-radius:99px;background:linear-gradient(90deg,var(--jade),#5fbfa9)}
+.sp-tip{margin:12px 0 0;min-height:2.9em;max-width:32ch;color:var(--ink-soft);font-size:13px;line-height:1.45}
+.sp-tip b{color:var(--lacquer);font-weight:900}
+.sp-foot{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));text-align:center;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);opacity:.8}
+.sp-lantern{position:absolute;top:0;width:clamp(40px,11vmin,72px);height:calc(clamp(40px,11vmin,72px)*2);transform-origin:50% 0;animation:sp-swing 3.2s ease-in-out infinite alternate}
+.sp-lantern.l{left:9%}.sp-lantern.r{right:9%;animation-delay:-1.6s;animation-duration:3.6s}
+.sp-lantern::before{content:"";position:absolute;left:50%;top:0;width:2px;height:42%;margin-left:-1px;background:var(--ink)}
+.sp-lantern::after{content:"";position:absolute;left:0;right:0;top:38%;height:50%;border-radius:50%/46%;background:#e23a3a;
+  box-shadow:inset 0 7px 0 -3px var(--gold),inset 0 -7px 0 -3px var(--gold),inset 10px 0 16px rgba(58,35,48,.18),0 0 26px rgba(226,58,58,.35)}
+.sp-lantern i{position:absolute;left:50%;top:88%;width:2px;height:12%;margin-left:-1px;background:var(--gold);box-shadow:-5px 0 0 var(--gold),5px 0 0 var(--gold)}
+@keyframes sp-stamp{from{transform:rotate(-14deg) scale(1.5);opacity:0}to{transform:rotate(-4deg) scale(1);opacity:1}}
+@keyframes sp-piece{from{transform:translate(40%,40%) rotate(25deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes sp-up{from{transform:translateY(10px);opacity:0}}
+@keyframes sp-swing{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@media (orientation:landscape) and (max-height:430px){.sp-lantern,.sp-foot{display:none}.sp-tip{min-height:0}.sp-mark{width:80px;margin-bottom:12px}.sp-seal{font-size:34px}.sp-title{font-size:30px}.sp-bar{margin-top:14px}}
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-touch-callout:none;touch-action:manipulation}
+img{max-width:100%;-webkit-user-drag:none}
+.stat{flex:none}
+
+/* ---------- shop tabs: 2×2 on phones ---------- */
+@media (max-width:480px){#shop-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#shop-tabs .tab{text-align:center;padding:8px 6px}}
+/* ---------- small phones ---------- */
+@media (max-width:360px){
+  .ttl b{font-size:16px}
+  .stat{min-width:50px;padding:3px 7px}
+  .btn{padding:11px 12px;font-size:14px}
+  .seal{width:54px;height:54px;font-size:22px}
+}
+
+/* ---------- landscape: board on the left, controls in a side column ---------- */
+@media (orientation:landscape) and (min-aspect-ratio:6/5){
+  #game{display:grid;grid-template-columns:minmax(0,1fr) clamp(210px,27vw,320px);grid-template-rows:auto auto minmax(0,1fr);
+        grid-template-areas:"stage top" "stage prog" "stage btns";column-gap:clamp(12px,2vw,28px)}
+  #game .top{grid-area:top;flex-wrap:wrap;margin:0;max-width:none;row-gap:8px}
+  #game .ttl{flex:1 1 0}
+  #game .stats{width:100%}
+  #game .stats .stat{flex:1}
+  #game .progress{grid-area:prog;margin:10px 0 0;max-width:none}
+  #game .stage{grid-area:stage;padding-block:0}
+  #game .bottom{grid-area:btns;flex-direction:column;flex-wrap:nowrap;justify-content:flex-start;margin:12px 0 0;max-width:none}
+  #game .bottom .btn{width:100%}
+  .modal{max-height:calc(100dvh - 24px)}
+  .overlay{padding-block:12px}
+}
+@media (orientation:landscape) and (max-height:430px){
+  .modal{padding:14px 16px}
+  .stars{font-size:32px;margin:4px 0 0}
+  #winbox .fact{display:none}
+  .reward{font-size:20px;margin:2px 0 6px}
+  .res{margin-bottom:8px}
+  #game .bottom .btn{padding:9px 10px}
+  #wheel-sub{display:none}
+  .wheelwrap{width:min(300px,40dvh);margin:16px auto 8px}
+  #wheel .col{flex-direction:row}#wheel .col .btn{flex:1}
+}
+
+/* ---------- tablets ---------- */
+@media (min-width:740px) and (min-height:600px){
+  body{font-size:17px}
+  .wrap{max-width:1180px}
+  .seal{width:80px;height:80px;font-size:32px}
+  .hero p{font-size:16px}
+  .pill{font-size:18px;padding:7px 16px 7px 8px}
+  .shopbtn{padding:12px 22px;font-size:17px}
+  .tab{padding:10px 20px;font-size:16px}
+  .cta{padding:14px 24px 14px 14px;border-radius:22px}
+  .cta img{width:88px;height:88px}
+  .cta b{font-size:24px}.cta span{font-size:15px}
+  .chapter h3{font-size:19px}
+  .lv{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
+  .lvl .num{font-size:20px}
+  .lvl .st{font-size:13px}
+  .chip{font-size:16px;padding:11px 18px}
+  .grid{gap:20px}
+  .card .nm{font-size:17px}
+  .top,.bottom,.progress{max-width:1000px}
+  .iconbtn{width:54px;height:54px;font-size:24px}
+  .ttl b{font-size:23px}.ttl span{font-size:15px}
+  .stat{min-width:76px;padding:6px 14px}
+  .stat small{font-size:12px}.stat b{font-size:21px}
+  .btn{padding:15px 24px;font-size:18px;border-radius:16px}
+  .progress{height:10px}
+  .frame{padding:14px;border-radius:22px}
+  .modal{max-width:520px;padding:28px}
+  .modal.wide{max-width:860px}
+  .modal h2{font-size:30px}
+  .items{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .fact{font-size:16px}
+  .day{font-size:12px}.day b{font-size:17px}
+}
+@media (min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:1250px){.grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+</style>
+</head>
+<body>
+
+<div id="splash" role="status" aria-live="polite" aria-label="Загрузка игры">
+  <span class="sp-lantern l" aria-hidden="true"><i></i></span><span class="sp-lantern r" aria-hidden="true"><i></i></span>
+  <div class="sp-center">
+    <div class="sp-mark" aria-hidden="true">
+      <div class="sp-seal">北京</div>
+      <svg class="sp-piece" viewBox="0 0 100 100"><path fill="#eab04a" stroke="#9e2229" stroke-width="6" stroke-linejoin="round" d="M14 30 H38 C34 22 36 10 50 10 C64 10 66 22 62 30 H86 V54 C78 50 66 52 66 64 C66 76 78 78 86 74 V92 H14 Z"/></svg>
+    </div>
+    <h1 class="sp-title">Пекинские пазлы</h1>
+    <p class="sp-sub">Картинки старого и нового Пекина</p>
+    <div class="sp-bar"><i id="splash-bar"></i></div>
+    <p class="sp-tip" id="splash-tip"></p>
+  </div>
+  <div class="sp-foot" aria-hidden="true">33 картинки · 100 уровней</div>
+</div>
+
+<section id="home" class="screen">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="hero">
+        <div class="seal" aria-hidden="true">北京</div>
+        <div>
+          <h1>Пекинские пазлы</h1>
+          <p>Собирай картинки Пекина, получай звёзды и монеты.</p>
+        </div>
+      </div>
+      <div class="wallet">
+        <span class="pill" id="coins-pill"></span>
+        <button class="shopbtn wheelbtn" id="wheel-open">Колесо<span class="dot" id="wheel-dot" hidden></span></button>
+        <button class="shopbtn" id="shop-open">Магазин</button>
+      </div>
+    </div>
+
+    <div class="bar">
+      <div class="tabs" role="tablist">
+        <button class="tab" id="t-levels" role="tab">Уровни</button>
+        <button class="tab" id="t-coll" role="tab">Коллекция</button>
+      </div>
+      <span class="label" id="lv-total"></span>
+    </div>
+
+    <div id="tab-levels">
+      <button class="cta" id="cta"></button>
+      <div id="chapters"></div>
+    </div>
+
+    <div id="tab-coll" hidden>
+      <div class="label" style="margin-bottom:10px">Сложность свободной игры</div>
+      <div class="chips" id="diffs"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="foot">
+      <button class="btn primary" id="auth" hidden>Войти, чтобы прогресс сохранялся на всех устройствах</button>
+      <div class="testchip" id="testchip" hidden>Тестовый режим: реклама и покупки здесь имитируются, деньги не списываются. На Пикабу Играх подключатся настоящие.</div>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen" hidden>
+  <div class="top">
+    <button class="iconbtn" id="back" aria-label="В меню">←</button>
+    <div class="ttl"><b id="gname"></b><span id="gdiff"></span></div>
+    <div class="stats">
+      <div class="stat"><small>Ходы</small><b id="moves">0</b></div>
+      <div class="stat"><small>Время</small><b id="time">0:00</b></div>
+    </div>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+  <div class="stage" id="stage"><div class="frame" id="frame"><canvas id="board"></canvas></div></div>
+  <div class="bottom">
+    <button class="btn" id="peek">Подсмотреть</button>
+    <button class="btn gold" id="hint">Подсказка <span class="cnt" id="hint-cnt">0</span></button>
+    <button class="btn" id="edges">Края <span class="cnt" id="edge-cnt">0</span></button>
+    <button class="btn" id="reshuffle">Заново</button>
+  </div>
+</section>
+
+<div class="overlay" id="winbox" hidden>
+  <div class="modal center" role="dialog" aria-labelledby="wint">
+    <h2 id="wint">Собрано!</h2>
+    <div class="stars" id="wstars"></div>
+    <div class="reward" id="wreward"></div>
+    <div class="res">
+      <div class="stat"><small>Ходы</small><b id="wmoves"></b></div>
+      <div class="stat"><small>Время</small><b id="wtime"></b></div>
+    </div>
+    <div class="fact"><b id="wfname"></b><span id="wfact"></span></div>
+    <div class="col" style="margin-top:14px">
+      <button class="btn primary" id="wdouble"></button>
+      <div class="row">
+        <button class="btn" id="wmenu">В меню</button>
+        <button class="btn red" id="wnext">Дальше →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="shop" hidden>
+  <div class="modal wide" role="dialog" aria-labelledby="shopt">
+    <div class="shop-head">
+      <h2 id="shopt">Магазин</h2>
+      <span class="pill" id="shop-coins"></span>
+      <button class="iconbtn" id="shop-close" aria-label="Закрыть магазин">✕</button>
+    </div>
+    <div class="tabs" id="shop-tabs"></div>
+    <div class="items" id="shop-items"></div>
+  </div>
+</div>
+
+<div class="overlay" id="wheel" hidden>
+  <div class="modal center" role="dialog" aria-labelledby="wheelt">
+    <h2 id="wheelt">Колесо удачи</h2>
+    <p class="muted" id="wheel-sub"></p>
+    <div class="wheelwrap"><div class="pin"></div><canvas id="wheel-cv" width="600" height="600"></canvas><div class="hub" aria-hidden="true">福</div></div>
+    <div class="col">
+      <button class="btn primary" id="wheel-spin"></button>
+      <button class="btn" id="wheel-close">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="offer" hidden>
+  <div class="modal center col" role="dialog" id="offer-body"></div>
+</div>
+
+<div class="overlay" id="daily" hidden>
+  <div class="modal center" role="dialog" aria-labelledby="dailyt">
+    <h2 id="dailyt">Ежедневная награда</h2>
+    <p class="muted" id="dsub"></p>
+    <div class="days" id="days"></div>
+    <div class="col">
+      <button class="btn primary" id="dx2"></button>
+      <button class="btn" id="dget"></button>
+    </div>
+  </div>
+</div>
+
+
+<div class="overlay" id="mockpay" hidden style="z-index:85">
+  <div class="modal center" role="dialog" aria-labelledby="mockpay-name">
+    <span class="ad">ТЕСТОВАЯ ПОКУПКА</span>
+    <h2 id="mockpay-name" style="margin-top:10px"></h2>
+    <p class="muted" id="mockpay-desc"></p>
+    <p class="muted">На Пикабу Играх здесь откроется окно оплаты. Сейчас деньги не списываются.</p>
+    <div class="row">
+      <button class="btn" id="mockpay-no">Отмена</button>
+      <button class="btn primary" id="mockpay-ok">Оплатить (тест)</button>
+    </div>
+  </div>
+</div>
+
+<div id="mockad" hidden></div>
+<div id="toast" hidden></div>
+<canvas id="confetti"></canvas>
+
+<script>
+(()=>{
+const S=900;
+/* ---------- drawing helpers ---------- */
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function grad(c,y0,y1,a,b){const g=c.createLinearGradient(0,y0,0,y1);g.addColorStop(0,a);g.addColorStop(1,b);return g}
+function cloud(c,x,y,s,col){c.fillStyle=col;c.beginPath();[[0,0,1],[.9,-.35,1.2],[1.9,0,1],[0.95,.25,1.05]].forEach(([dx,dy,r])=>{c.moveTo(x+dx*40*s+r*34*s,y+dy*40*s);c.arc(x+dx*40*s,y+dy*40*s,r*34*s,0,7)});c.fill()}
+function face(c,x,y,s,eye="#3a2330"){
+  c.fillStyle=eye;c.beginPath();c.arc(x-14*s,y,4.5*s,0,7);c.arc(x+14*s,y,4.5*s,0,7);c.fill();
+  c.fillStyle="#fff";c.beginPath();c.arc(x-12.5*s,y-1.8*s,1.6*s,0,7);c.arc(x+15.5*s,y-1.8*s,1.6*s,0,7);c.fill();
+  c.strokeStyle=eye;c.lineWidth=2.6*s;c.lineCap="round";c.beginPath();c.arc(x,y+4*s,5*s,.15*Math.PI,.85*Math.PI);c.stroke();
+  c.fillStyle="rgba(255,120,140,.55)";c.beginPath();c.ellipse(x-25*s,y+8*s,7*s,4.5*s,0,0,7);c.ellipse(x+25*s,y+8*s,7*s,4.5*s,0,0,7);c.fill();
+}
+function eaveRoof(c,cx,y,w,h,col="#f2b63b",dark="#c98a1f"){
+  const l=cx-w/2,r=cx+w/2;
+  c.fillStyle=col;c.beginPath();c.moveTo(l-18,y+h-14);c.quadraticCurveTo(l+w*.12,y+h,l+w*.18,y);c.lineTo(r-w*.18,y);c.quadraticCurveTo(r-w*.12,y+h,r+18,y+h-14);
+  c.quadraticCurveTo(cx,y+h+6,l-18,y+h-14);c.fill();
+  c.strokeStyle=dark;c.lineWidth=3;c.globalAlpha=.6;
+  for(let i=1;i<9;i++){const xx=l+w*.18+(w*.64)*i/9;c.beginPath();c.moveTo(xx,y+4);c.lineTo(xx+(xx-cx)*.12,y+h-4);c.stroke()}
+  c.globalAlpha=1;c.fillStyle=dark;c.fillRect(l+w*.16,y-7,w*.68,9);
+  c.beginPath();c.arc(l+w*.16,y-3,8,0,7);c.arc(r-w*.16,y-3,8,0,7);c.fill();
+}
+function conical(c,cx,yb,w,h,col,edge){
+  c.fillStyle=col;c.beginPath();c.moveTo(cx-w/2-10,yb);c.quadraticCurveTo(cx-w*.3,yb-h*.25,cx-w*.12,yb-h*.85);c.quadraticCurveTo(cx,yb-h*1.05,cx+w*.12,yb-h*.85);
+  c.quadraticCurveTo(cx+w*.3,yb-h*.25,cx+w/2+10,yb);c.closePath();c.fill();
+  c.strokeStyle="rgba(255,255,255,.18)";c.lineWidth=4;for(let i=-3;i<=3;i++){c.beginPath();c.moveTo(cx+i*w*.13,yb-4);c.quadraticCurveTo(cx+i*w*.06,yb-h*.4,cx+i*w*.015,yb-h*.9);c.stroke()}
+  c.fillStyle=edge;c.beginPath();c.ellipse(cx,yb,w/2+12,9,0,0,7);c.fill();
+}
+
+function sky(c,a,b,h){c.fillStyle=grad(c,0,h||S,a,b);c.fillRect(0,0,S,h||S)}
+function ground(c,y,col){c.fillStyle=col;c.fillRect(0,y,S,S-y)}
+function rng(seed){let r=seed%2147483647||1;return()=>(r=r*16807%2147483647)/2147483647}
+function stars(c,n,seed,h){const R=rng(seed);c.fillStyle="#fff6d8";for(let i=0;i<n;i++){c.globalAlpha=.4+R()*.6;c.beginPath();c.arc(R()*S,R()*h,1+R()*2.5,0,7);c.fill()}c.globalAlpha=1}
+function hall(c,cx,yb,w,h,rc,rd){rc=rc||"#f2b63b";rd=rd||"#c98a1f";c.fillStyle="#c8323a";c.fillRect(cx-w/2,yb-h,w,h);c.fillStyle="#9e2229";const n=Math.max(3,Math.round(w/55));for(let i=0;i<=n;i++)c.fillRect(cx-w/2+i*(w-10)/n,yb-h,10,h);
+  c.fillStyle="#3f9e8a";c.fillRect(cx-w/2-8,yb-h-12,w+16,14);const rh=Math.max(26,w*.13),top=yb-h-12-rh+4;eaveRoof(c,cx,top,w+50,rh,rc,rd);return top}
+function lantern(c,x,y,s,col,fc){col=col||"#e23a3a";c.strokeStyle="#3a2330";c.lineWidth=2*s;c.beginPath();c.moveTo(x,y);c.lineTo(x,y+18*s);c.stroke();
+  c.fillStyle=col;c.beginPath();c.ellipse(x,y+60*s,46*s,42*s,0,0,7);c.fill();
+  c.fillStyle="#f2b63b";rr(c,x-20*s,y+14*s,40*s,9*s,3*s);c.fill();rr(c,x-20*s,y+98*s,40*s,9*s,3*s);c.fill();
+  c.strokeStyle="#f2b63b";c.lineWidth=2.5*s;for(let k=-2;k<=2;k++){c.beginPath();c.moveTo(x+k*5*s,y+107*s);c.lineTo(x+k*6*s,y+135*s);c.stroke()}
+  if(fc!==false)face(c,x,y+58*s,s*.75,"#5a1d22")}
+function tree(c,x,y,r,col){c.fillStyle="#7a5534";c.fillRect(x-r*.12,y-r*1.2,r*.24,r*1.2);c.fillStyle=col||"#3f9e8a";c.beginPath();c.arc(x,y-r*1.4,r*.8,0,7);c.arc(x-r*.6,y-r*1.05,r*.6,0,7);c.arc(x+r*.6,y-r*1.05,r*.6,0,7);c.fill()}
+function bricks(c,y0,y1,base,line){c.fillStyle=base;c.fillRect(0,y0,S,y1-y0);c.fillStyle=line;for(let y=y0;y<y1;y+=30){c.fillRect(0,y,S,3);for(let x=((y-y0)/30%2)*30;x<S;x+=60)c.fillRect(x,y,3,30)}}
+function teapot(c,x,y,s,col){c.save();c.translate(x,y);c.scale(s,s);c.fillStyle=col;c.beginPath();c.ellipse(0,0,90,76,0,0,7);c.fill();
+  c.strokeStyle=col;c.lineCap="round";c.lineWidth=18;c.beginPath();c.moveTo(-80,0);c.quadraticCurveTo(-140,-30,-140,-80);c.stroke();c.lineWidth=13;c.beginPath();c.arc(90,0,44,-1.2,1.2);c.stroke();
+  c.fillStyle="rgba(0,0,0,.15)";c.beginPath();c.ellipse(0,-70,52,13,0,0,7);c.fill();c.fillStyle=col;c.beginPath();c.arc(0,-84,13,0,7);c.fill();
+  c.fillStyle="rgba(255,255,255,.3)";c.beginPath();c.ellipse(-36,-30,22,10,-.5,0,7);c.fill();c.restore()}
+function cup(c,x,y,s){c.fillStyle="#fffaf1";rr(c,x-50*s,y-40*s,100*s,70*s,16*s);c.fill();c.fillStyle="#c9e2b2";c.beginPath();c.ellipse(x,y-38*s,48*s,10*s,0,0,7);c.fill();c.strokeStyle="#2f6fb3";c.lineWidth=4*s;c.beginPath();c.moveTo(x-44*s,y);c.lineTo(x+44*s,y);c.stroke()}
+function chop(c,x,y,a,col){c.save();c.translate(x,y);c.rotate(a);c.fillStyle=col||"#c8323a";rr(c,-200,-8,400,13,6);c.fill();rr(c,-200,18,400,13,6);c.fill();c.fillStyle="#f2b63b";c.fillRect(-200,-8,60,13);c.fillRect(-200,18,60,13);c.restore()}
+function plate(c,x,y,r){c.fillStyle="rgba(58,35,48,.12)";c.beginPath();c.ellipse(x+10,y+16,r,r*.96,0,0,7);c.fill();c.fillStyle="#fff";c.beginPath();c.arc(x,y,r,0,7);c.fill();c.strokeStyle="#2f6fb3";c.lineWidth=8;c.beginPath();c.arc(x,y,r-18,0,7);c.stroke()}
+function snow(c,n,seed){const R=rng(seed);c.fillStyle="#fff";for(let i=0;i<n;i++){c.globalAlpha=.6+R()*.4;c.beginPath();c.arc(R()*S,R()*S,2+R()*5,0,7);c.fill()}c.globalAlpha=1}
+function ripples(c,n,y0,h,col){c.strokeStyle=col;c.lineWidth=4;c.lineCap="round";for(let i=0;i<n;i++){const x=(i*157)%880,y=y0+(i*53)%h;c.beginPath();c.moveTo(x,y);c.lineTo(x+46,y);c.stroke()}}
+
+/* ---------- pictures ---------- */
+const PICS=[
+{name:"Запретный город",fact:"Императорский дворец строили 14 лет и закончили в 1420 году. Почти пять веков сюда нельзя было войти без разрешения императора.",draw(c){
+  c.fillStyle=grad(c,0,600,"#ffcfc4","#fff1df");c.fillRect(0,0,S,S);
+  c.fillStyle="#ffb48c";c.beginPath();c.arc(700,190,90,0,7);c.fill();
+  cloud(c,90,150,1.1,"#fff7f1");cloud(c,560,90,.8,"#fff7f1");
+  c.fillStyle="#f3d2a6";c.fillRect(0,690,S,210);
+  c.strokeStyle="rgba(201,138,31,.25)";c.lineWidth=2;for(let i=0;i<8;i++){c.beginPath();c.moveTo(0,710+i*26);c.lineTo(S,710+i*26);c.stroke()}
+  c.fillStyle="#c8323a";c.fillRect(70,480,760,230);
+  c.fillStyle="#a8262e";for(let x=70;x<830;x+=38)c.fillRect(x,480,3,230);
+  c.fillStyle="#5a1d22";[[450,110,150],[270,78,115],[630,78,115]].forEach(([x,w,h])=>{c.beginPath();c.moveTo(x-w/2,710);c.lineTo(x-w/2,710-h+w/2);c.arc(x,710-h+w/2,w/2,Math.PI,0);c.lineTo(x+w/2,710);c.fill()});
+  c.fillStyle="#f6efe6";c.fillRect(60,462,780,22);for(let x=70;x<830;x+=26)c.fillRect(x,446,8,18);c.fillRect(60,440,780,8);
+  c.fillStyle="#c8323a";c.fillRect(190,352,520,92);c.fillStyle="#9e2229";for(let x=200;x<700;x+=52)c.fillRect(x,352,12,92);
+  c.fillStyle="#3f9e8a";c.fillRect(180,338,540,18);c.fillStyle="#e8f3ef";for(let x=186;x<716;x+=30)c.fillRect(x,343,14,8);
+  eaveRoof(c,450,290,600,64);
+  c.fillStyle="#c8323a";c.fillRect(270,222,360,72);c.fillStyle="#9e2229";for(let x=280;x<630;x+=48)c.fillRect(x,222,10,72);
+  c.fillStyle="#3f9e8a";c.fillRect(262,212,376,14);
+  eaveRoof(c,450,160,440,60);
+  [[300,370],[600,370]].forEach(([x,y])=>{c.strokeStyle="#5a1d22";c.lineWidth=2;c.beginPath();c.moveTo(x,y-20);c.lineTo(x,y);c.stroke();c.fillStyle="#e23a3a";c.beginPath();c.ellipse(x,y+20,20,24,0,0,7);c.fill();c.fillStyle="#f2b63b";c.fillRect(x-10,y-2,20,6);c.fillRect(x-10,y+40,20,6)});
+  c.fillStyle="#3f9e8a";[[40,690],[860,690]].forEach(([x,y])=>{c.beginPath();c.arc(x,y-50,60,0,7);c.fill()});
+}},
+{name:"Храм Неба",fact:"Зал молитв об урожае стоит на трёхъярусной мраморной террасе. Его синие крыши символизируют небо, а сам храм построен без единого гвоздя.",draw(c){
+  c.fillStyle=grad(c,0,700,"#c9e6f3","#fff3e6");c.fillRect(0,0,S,S);
+  cloud(c,80,170,1,"#fff");cloud(c,640,120,1.2,"#fff");cloud(c,700,330,.6,"#fff");
+  c.fillStyle="#bfe3b0";c.fillRect(0,760,S,140);
+  [[770,720,46],[724,600,44],[680,480,44]].forEach(([y,w,h])=>{rr(c,450-w/2,y-h,w,h,6);c.fillStyle="#f8f4ee";c.fill();c.strokeStyle="#d8ccbf";c.lineWidth=3;c.stroke();
+    c.fillStyle="#e3d8cb";for(let x=450-w/2+14;x<450+w/2-8;x+=22)c.fillRect(x,y-h+6,6,h-16)});
+  c.fillStyle="#c8323a";c.fillRect(315,545,270,90);c.fillStyle="#9e2229";for(let x=325;x<585;x+=40)c.fillRect(x,545,10,90);
+  c.fillStyle="#f2b63b";c.fillRect(395,575,110,60);c.fillStyle="#c98a1f";c.fillRect(448,575,4,60);
+  conical(c,450,555,400,90,"#2f6fb3","#e9b443");
+  c.fillStyle="#c8323a";c.fillRect(345,425,210,50);conical(c,450,445,320,80,"#2f6fb3","#e9b443");
+  c.fillStyle="#c8323a";c.fillRect(370,320,160,45);conical(c,450,340,250,110,"#2f6fb3","#e9b443");
+  c.fillStyle="#f2b63b";c.beginPath();c.arc(450,215,18,0,7);c.fill();c.fillRect(444,225,12,20);
+  c.fillStyle="#3f9e8a";[[60,760],[130,780],[790,770],[860,760]].forEach(([x,y])=>{c.beginPath();c.arc(x,y-40,48,0,7);c.fill()});
+}},
+{name:"Великая стена",fact:"Участок Бадалин под Пекином открыли для туристов в 1957 году. С тех пор по нему прошли сотни миллионов людей.",draw(c){
+  c.fillStyle=grad(c,0,600,"#ffbfa0","#ffe9d2");c.fillRect(0,0,S,S);
+  c.fillStyle="#fff2c8";c.beginPath();c.arc(640,240,80,0,7);c.fill();
+  const hills=(base,amp,f,ph,col)=>{c.fillStyle=col;c.beginPath();c.moveTo(0,S);for(let x=0;x<=S;x+=10)c.lineTo(x,base-amp*Math.abs(Math.sin(x*f+ph))-amp*.4*Math.sin(x*f*2.3+ph));c.lineTo(S,S);c.fill()};
+  hills(470,140,.006,0.8,"#c5bfd4");hills(560,130,.008,2.2,"#a3c3a2");
+  const P=t=>{const x=-40+t*980;return [x,630-120*Math.sin(t*Math.PI*2.1+0.3)-60*Math.sin(t*9)]};
+  hills(700,110,.007,4,"#6fa780");
+  c.strokeStyle="#c9a473";c.lineWidth=42;c.lineCap="round";c.lineJoin="round";c.beginPath();for(let t=0;t<=1;t+=.01){const [x,y]=P(t);t?c.lineTo(x,y):c.moveTo(x,y)}c.stroke();
+  c.strokeStyle="#e2c597";c.lineWidth=26;c.stroke();
+  c.fillStyle="#b48a58";for(let t=0;t<=1;t+=.014){const [x,y]=P(t);c.fillRect(x-6,y-34,12,14)}
+  [.3,.72].forEach(t=>{const [x,y]=P(t);c.fillStyle="#d6b484";c.fillRect(x-48,y-110,96,100);c.fillStyle="#7a5534";c.fillRect(x-14,y-80,28,36);
+    c.fillStyle="#b48a58";for(let i=0;i<5;i++)c.fillRect(x-48+i*21,y-126,14,18);});
+  hills(860,60,.01,1,"#4f8a63");
+  c.fillStyle="#fff";c.globalAlpha=.7;cloud(c,60,120,.9,"#fff");cloud(c,380,80,.7,"#fff");c.globalAlpha=1;
+}},
+{name:"Хутун с фонариками",fact:"Хутуны — узкие старые переулки Пекина. Многие из них появились ещё в XIII веке, при династии Юань.",draw(c){
+  c.fillStyle="#a6b2bf";c.fillRect(0,0,S,S);
+  c.fillStyle="#97a3b1";for(let y=0;y<S;y+=30)for(let x=(y/30%2)*30;x<S;x+=60)c.fillRect(x+2,y+2,56,26);
+  c.fillStyle="#cdbba5";c.fillRect(0,780,S,120);
+  c.fillStyle="#5d6977";c.fillRect(250,310,400,36);for(let x=250;x<650;x+=24){c.beginPath();c.arc(x+12,346,12,0,Math.PI);c.fill()}
+  c.fillStyle="#3a2330";c.fillRect(290,346,320,440);
+  c.fillStyle="#c8323a";c.fillRect(306,362,140,424);c.fillRect(454,362,140,424);
+  c.fillStyle="#f2b63b";for(let r=0;r<5;r++)for(let k=0;k<3;k++){c.beginPath();c.arc(340+k*36,410+r*64,7,0,7);c.arc(488+k*36,410+r*64,7,0,7);c.fill()}
+  c.beginPath();c.arc(430,600,12,0,7);c.arc(470,600,12,0,7);c.fill();
+  c.fillStyle="#e23a3a";c.fillRect(220,380,46,330);c.fillRect(634,380,46,330);
+  c.fillStyle="#f2b63b";for(let i=0;i<5;i++){rr(c,231,398+i*62,24,34,4);c.fill();rr(c,645,398+i*62,24,34,4);c.fill()}
+  c.strokeStyle="#3a2330";c.lineWidth=3;c.beginPath();c.moveTo(-10,90);c.quadraticCurveTo(450,250,910,90);c.stroke();
+  [[110,0.9],[280,1],[450,1.1],[620,1],[790,.9]].forEach(([x,s])=>{const y=90+ (1-Math.pow((x-450)/460,2))*80;
+    c.beginPath();c.moveTo(x,y);c.lineTo(x,y+18);c.stroke();
+    c.fillStyle="#e23a3a";c.beginPath();c.ellipse(x,y+70*s,58*s,52*s,0,0,7);c.fill();
+    c.strokeStyle="rgba(158,34,41,.5)";c.lineWidth=2;for(let k=-2;k<=2;k++){c.beginPath();c.ellipse(x,y+70*s,Math.abs(k)*20*s+4,52*s,0,0,7);c.stroke()}
+    c.fillStyle="#f2b63b";rr(c,x-26*s,y+14*s,52*s,10*s,3);c.fill();rr(c,x-26*s,y+116*s,52*s,10*s,3);c.fill();
+    c.strokeStyle="#f2b63b";c.lineWidth=3;for(let k=-2;k<=2;k++){c.beginPath();c.moveTo(x+k*6,y+126*s);c.lineTo(x+k*7,y+160*s);c.stroke()}
+    face(c,x,y+66*s,s*.9,"#5a1d22");c.strokeStyle="#3a2330";c.lineWidth=3});
+  c.fillStyle="#3f9e8a";c.beginPath();c.arc(110,720,70,Math.PI,0);c.fill();c.fillStyle="#7d5f68";rr(c,70,720,80,70,8);c.fill();
+  c.fillStyle="#3f9e8a";c.beginPath();c.arc(790,720,70,Math.PI,0);c.fill();c.fillStyle="#7d5f68";rr(c,750,720,80,70,8);c.fill();
+}},
+{name:"Утка по‑пекински",fact:"Утку запекают в печи, а потом повар нарезает её на десятки тонких ломтиков с хрустящей кожицей. Едят с блинчиками, огурцом и сладким соусом.",draw(c){
+  c.fillStyle="#f7d9c9";c.fillRect(0,0,S,S);
+  c.fillStyle="#f1c9b6";for(let y=0;y<S;y+=90)for(let x=(y/90%2)*45;x<S;x+=90){c.beginPath();c.arc(x,y,14,0,7);c.fill()}
+  c.fillStyle="rgba(58,35,48,.12)";c.beginPath();c.ellipse(460,480,320,300,0,0,7);c.fill();
+  c.fillStyle="#fff";c.beginPath();c.arc(450,460,310,0,7);c.fill();
+  c.strokeStyle="#2f6fb3";c.lineWidth=10;c.beginPath();c.arc(450,460,290,0,7);c.stroke();
+  c.lineWidth=3;for(let a=0;a<6.28;a+=.26){c.beginPath();c.arc(450+275*Math.cos(a),460+275*Math.sin(a),6,0,7);c.stroke()}
+  for(let i=0;i<14;i++){const a=-2.6+i*0.4,x=450+175*Math.cos(a),y=470+165*Math.sin(a);
+    c.save();c.translate(x,y);c.rotate(a+1.57);c.fillStyle="#fbe3c7";c.beginPath();c.ellipse(0,6,44,22,0,0,7);c.fill();
+    c.fillStyle="#b4532a";c.beginPath();c.ellipse(0,-2,44,18,0,Math.PI,0);c.fill();c.fillStyle="rgba(255,255,255,.35)";c.beginPath();c.ellipse(-10,-10,18,4,0,0,7);c.fill();c.restore()}
+  c.fillStyle="#a54620";c.beginPath();c.ellipse(450,450,110,80,0,0,7);c.fill();
+  c.fillStyle="#c96a36";c.beginPath();c.ellipse(440,435,90,58,0,0,7);c.fill();
+  c.fillStyle="rgba(255,255,255,.4)";c.beginPath();c.ellipse(410,410,40,10,-.3,0,7);c.fill();
+  face(c,450,460,1.1,"#3a2330");
+  c.fillStyle="#fffaf2";[0,1,2].forEach(i=>{c.beginPath();c.ellipse(130,760-i*14,110,40,0,0,7);c.fill();c.strokeStyle="#ead7bd";c.lineWidth=2;c.stroke()});
+  c.fillStyle="#fff";c.beginPath();c.arc(780,130,80,0,7);c.fill();c.fillStyle="#5a2a1c";c.beginPath();c.arc(780,130,58,0,7);c.fill();
+  [[620,820],[660,840],[700,815]].forEach(([x,y],i)=>{c.save();c.translate(x,y);c.rotate(-.5+i*.1);c.fillStyle="#6aa95a";rr(c,-80,-9,160,18,6);c.fill();c.fillStyle="#d8efc1";rr(c,-74,-3,148,6,3);c.fill();c.restore()});
+  c.save();c.translate(160,180);c.rotate(.75);c.fillStyle="#c8323a";rr(c,-200,-8,400,14,6);c.fill();rr(c,-200,20,400,14,6);c.fill();c.fillStyle="#f2b63b";c.fillRect(-200,-8,70,14);c.fillRect(-200,20,70,14);c.restore();
+}},
+{name:"Панда в бамбуке",fact:"В Пекинском зоопарке живут большие панды. Взрослая панда проводит за едой до 14 часов в день и съедает десятки килограммов бамбука.",draw(c){
+  c.fillStyle=grad(c,0,S,"#d4efd8","#f6fbee");c.fillRect(0,0,S,S);
+  const bamboo=(x,w,col,ph)=>{c.fillStyle=col;c.fillRect(x,0,w,S);c.fillStyle="rgba(0,0,0,.12)";for(let y=(ph%140);y<S;y+=140){c.fillRect(x-3,y,w+6,8)}
+    c.fillStyle=col;for(let y=60+ph%140;y<S;y+=180){c.save();c.translate(x+w,y);c.rotate(-.5);c.beginPath();c.ellipse(46,0,52,13,0,0,7);c.fill();c.restore();c.save();c.translate(x,y+50);c.rotate(.5+3.14);c.beginPath();c.ellipse(46,0,48,12,0,0,7);c.fill();c.restore()}};
+  bamboo(60,34,"#9ccc8c",30);bamboo(230,28,"#86bd78",90);bamboo(700,36,"#9ccc8c",10);bamboo(830,26,"#86bd78",70);
+  c.fillStyle="#a9d79a";c.fillRect(0,780,S,120);
+  c.fillStyle="#2d2a2e";c.beginPath();c.ellipse(330,790,70,46,0,0,7);c.ellipse(570,790,70,46,0,0,7);c.fill();
+  c.fillStyle="#fffdf8";c.beginPath();c.ellipse(450,650,200,180,0,0,7);c.fill();
+  c.fillStyle="#2d2a2e";c.beginPath();c.ellipse(450,520,215,60,0,0,Math.PI);c.fill();
+  c.fillStyle="#2d2a2e";c.beginPath();c.arc(305,300,62,0,7);c.arc(595,300,62,0,7);c.fill();
+  c.fillStyle="#fffdf8";c.beginPath();c.ellipse(450,400,190,160,0,0,7);c.fill();
+  c.fillStyle="#2d2a2e";c.beginPath();c.ellipse(380,395,46,56,-.6,0,7);c.ellipse(520,395,46,56,.6,0,7);c.fill();
+  c.fillStyle="#fff";c.beginPath();c.arc(385,392,16,0,7);c.arc(515,392,16,0,7);c.fill();c.fillStyle="#2d2a2e";c.beginPath();c.arc(388,395,9,0,7);c.arc(512,395,9,0,7);c.fill();
+  c.fillStyle="#2d2a2e";c.beginPath();c.ellipse(450,452,18,12,0,0,7);c.fill();
+  c.strokeStyle="#2d2a2e";c.lineWidth=5;c.lineCap="round";c.beginPath();c.arc(438,468,12,.2,2.6);c.stroke();c.beginPath();c.arc(462,468,12,.5,2.9);c.stroke();
+  c.fillStyle="rgba(255,130,150,.55)";c.beginPath();c.ellipse(325,455,26,15,0,0,7);c.ellipse(575,455,26,15,0,0,7);c.fill();
+  c.save();c.translate(560,600);c.rotate(-.5);c.fillStyle="#7cb56a";c.fillRect(-14,-230,28,330);c.fillStyle="rgba(0,0,0,.15)";c.fillRect(-17,-120,34,8);c.fillRect(-17,0,34,8);
+  c.fillStyle="#7cb56a";c.beginPath();c.ellipse(40,-220,50,13,-.4,0,7);c.ellipse(-36,-180,46,12,.4,0,7);c.fill();c.restore();
+  c.fillStyle="#2d2a2e";c.beginPath();c.ellipse(560,600,62,48,-.5,0,7);c.ellipse(330,610,58,48,.4,0,7);c.fill();
+}},
+{name:"Летний дворец",fact:"Семнадцатиарочный мост в Летнем дворце тянется почти на 150 метров. На его перилах вырезаны сотни каменных львов.",draw(c){
+  c.fillStyle=grad(c,0,520,"#e8d3f0","#ffeede");c.fillRect(0,0,S,520);
+  cloud(c,520,110,1,"#fff8fb");
+  c.fillStyle="#88bd8f";c.beginPath();c.moveTo(0,520);c.quadraticCurveTo(160,250,420,520);c.fill();
+  c.fillStyle="#a9cfa0";c.beginPath();c.moveTo(300,520);c.quadraticCurveTo(620,360,900,520);c.fill();
+  c.fillStyle="#c8323a";c.fillRect(170,300,70,90);c.fillRect(182,240,46,60);c.fillRect(192,196,26,44);
+  eaveRoof(c,205,368,110,26);eaveRoof(c,205,290,90,22);eaveRoof(c,205,226,62,18);
+  c.fillStyle="#f2b63b";c.beginPath();c.arc(205,186,8,0,7);c.fill();
+  c.fillStyle="#9fd3d6";c.fillRect(0,520,S,380);
+  c.strokeStyle="rgba(255,255,255,.55)";c.lineWidth=4;c.lineCap="round";for(let i=0;i<28;i++){const x=(i*157)%900,y=560+(i*61)%320;c.beginPath();c.moveTo(x,y);c.lineTo(x+50,y);c.stroke()}
+  c.fillStyle="#f8f2ea";c.beginPath();c.moveTo(-10,560);c.quadraticCurveTo(450,470,910,560);c.lineTo(910,620);c.quadraticCurveTo(450,540,-10,620);c.fill();
+  c.fillStyle="#9fd3d6";for(let i=0;i<17;i++){const x=20+i*52,yb=620-((1-Math.pow((x-450)/470,2))*78);const h=18+ (1-Math.abs(i-8)/8)*26;c.beginPath();c.moveTo(x-20,yb+1);c.lineTo(x-20,yb-h+18);c.arc(x,yb-h+18,20,Math.PI,0);c.lineTo(x+20,yb+1);c.fill()}
+  c.fillStyle="#d8ccbf";c.beginPath();c.moveTo(-10,556);c.quadraticCurveTo(450,466,910,556);c.lineTo(910,564);c.quadraticCurveTo(450,474,-10,564);c.fill();
+  c.fillStyle="#c8323a";rr(c,560,730,200,40,18);c.fill();c.fillStyle="#f2b63b";c.beginPath();c.moveTo(560,740);c.quadraticCurveTo(520,700,545,670);c.quadraticCurveTo(560,720,580,735);c.fill();
+  c.fillStyle="#f2b63b";c.fillRect(620,690,90,40);c.fillStyle="#c8323a";c.fillRect(612,682,106,10);
+  [[120,780],[220,840],[90,860],[360,830]].forEach(([x,y])=>{c.fillStyle="#5fa679";c.beginPath();c.ellipse(x,y,46,18,0,.3,6.1);c.lineTo(x,y);c.fill();});
+  c.fillStyle="#f6a6c1";c.beginPath();c.arc(220,825,14,0,7);c.arc(360,815,12,0,7);c.fill();
+}},
+{name:"Баоцзы и чай",fact:"Баоцзы — пышные паровые булочки с начинкой. В Пекине их едят на завтрак, часто вместе с горячим чаем.",draw(c){
+  c.fillStyle="#ffe4cf";c.fillRect(0,0,S,S);
+  c.fillStyle="#f6cdb2";for(let i=0;i<S;i+=60){c.fillRect(i,0,26,S)}c.globalAlpha=.5;for(let i=0;i<S;i+=60)c.fillRect(0,i,S,26);c.globalAlpha=1;
+  c.fillStyle="rgba(58,35,48,.15)";c.beginPath();c.ellipse(350,770,300,40,0,0,7);c.fill();
+  c.fillStyle="#d9a85e";rr(c,70,560,560,200,22);c.fill();
+  c.strokeStyle="#b8853e";c.lineWidth=4;for(let y=590;y<750;y+=26){c.beginPath();c.moveTo(80,y);c.lineTo(620,y);c.stroke()}
+  c.fillStyle="#e8bd75";rr(c,56,540,588,40,16);c.fill();
+  [[200,470,1],[350,440,1.1],[500,470,1]].forEach(([x,y,s])=>{c.fillStyle="#fffaf1";c.beginPath();c.ellipse(x,y+40*s,110*s,90*s,0,Math.PI,0);c.quadraticCurveTo(x+110*s,y+80*s,x,y+80*s);c.quadraticCurveTo(x-110*s,y+80*s,x-110*s,y+40*s);c.fill();
+    c.strokeStyle="#ead9c1";c.lineWidth=3;for(let k=0;k<6;k++){c.beginPath();c.moveTo(x,y-46*s);c.quadraticCurveTo(x+(k-2.5)*22*s,y-30*s,x+(k-2.5)*30*s,y-6*s);c.stroke()}
+    face(c,x,y+28*s,s,"#3a2330")});
+  c.strokeStyle="rgba(255,255,255,.85)";c.lineWidth=8;c.lineCap="round";[[260,330],[350,300],[440,330]].forEach(([x,y])=>{c.beginPath();c.moveTo(x,y);c.bezierCurveTo(x-30,y-40,x+30,y-70,x,y-120);c.stroke()});
+  c.fillStyle="#3f9e8a";c.beginPath();c.ellipse(770,520,110,100,0,0,7);c.fill();
+  c.fillStyle="#357f6f";c.beginPath();c.ellipse(770,430,60,16,0,0,7);c.fill();c.beginPath();c.arc(770,410,14,0,7);c.fill();
+  c.strokeStyle="#3f9e8a";c.lineWidth=22;c.beginPath();c.moveTo(670,520);c.quadraticCurveTo(600,470,610,420);c.stroke();
+  c.lineWidth=14;c.beginPath();c.arc(880,520,50,-1.2,1.2);c.stroke();
+  c.fillStyle="#f2b63b";c.fillRect(670,510,200,14);
+  c.fillStyle="#fffaf1";rr(c,700,690,140,90,18);c.fill();c.fillStyle="#c9e2b2";c.beginPath();c.ellipse(770,692,70,12,0,0,7);c.fill();
+  c.strokeStyle="#3f9e8a";c.lineWidth=5;c.beginPath();c.moveTo(712,730);c.lineTo(828,730);c.stroke();
+}},
+{name:"Барабанная башня",fact:"Барабанную башню построили в 1272 году. Удары её барабанов отмеряли время по ночам, а утром им отвечал колокол с соседней башни.",draw(c){
+  sky(c,"#ffd3c2","#fff0de",780);cloud(c,620,120,1,"#fff8f2");cloud(c,60,220,.7,"#fff8f2");ground(c,780,"#efcfa2");
+  c.fillStyle="#8e8794";c.fillRect(150,540,600,250);c.fillStyle="#7b7482";for(let y=556;y<790;y+=26)c.fillRect(150,y,600,3);
+  c.fillStyle="#4a3440";[300,450,600].forEach(x=>{c.beginPath();c.moveTo(x-38,790);c.lineTo(x-38,712);c.arc(x,712,38,Math.PI,0);c.lineTo(x+38,790);c.fill()});
+  const t=hall(c,450,540,460,120);
+  [290,370,450,530,610].forEach(x=>{c.fillStyle="#c8323a";c.beginPath();c.arc(x,482,32,0,7);c.fill();c.fillStyle="#f6e4c8";c.beginPath();c.arc(x,482,23,0,7);c.fill();c.fillStyle="#eab04a";for(let a=0;a<6.28;a+=.6){c.beginPath();c.arc(x+28*Math.cos(a),482+28*Math.sin(a),2.6,0,7);c.fill()}});
+  hall(c,450,t+12,320,70);tree(c,70,800,80);tree(c,830,800,80);
+}},
+{name:"Колокольная башня",fact:"В Колокольной башне висит бронзовый колокол весом около 63 тонн. В старину его звон слышали по всему городу.",draw(c){
+  sky(c,"#d4e5f2","#fdf1e6",790);cloud(c,600,150,1.1,"#fff");ground(c,790,"#dcc9ae");
+  c.save();c.beginPath();c.moveTo(240,790);c.lineTo(285,470);c.lineTo(615,470);c.lineTo(660,790);c.closePath();c.clip();c.fillStyle="#9ba1ab";c.fillRect(200,460,500,340);c.fillStyle="#878d98";for(let y=486;y<790;y+=26)c.fillRect(200,y,500,3);c.restore();
+  c.fillStyle="#4a4452";c.beginPath();c.moveTo(405,790);c.lineTo(405,690);c.arc(450,690,45,Math.PI,0);c.lineTo(495,790);c.fill();
+  c.fillStyle="#a3a9b3";c.fillRect(305,372,290,100);c.fillStyle="#4a4452";[370,450,530].forEach(x=>{c.beginPath();c.moveTo(x-22,450);c.lineTo(x-22,412);c.arc(x,412,22,Math.PI,0);c.lineTo(x+22,450);c.fill()});
+  eaveRoof(c,450,316,360,56,"#5d8a74","#3e6655");c.fillStyle="#a3a9b3";c.fillRect(345,262,210,52);eaveRoof(c,450,214,280,50,"#5d8a74","#3e6655");
+  c.fillStyle="#a8743f";c.beginPath();c.moveTo(70,780);c.quadraticCurveTo(84,640,130,606);c.lineTo(230,606);c.quadraticCurveTo(276,640,290,780);c.closePath();c.fill();
+  c.fillStyle="#8a5c30";c.fillRect(64,760,232,22);c.fillRect(150,578,60,30);c.fillStyle="rgba(255,255,255,.25)";c.fillRect(110,640,16,110);
+  face(c,180,690,1.1,"#4a2a18");
+}},
+{name:"Храм Юнхэгун",fact:"В храме Юнхэгун стоит статуя Будды Майтреи высотой 26 метров, вырезанная из цельного ствола сандалового дерева. Восемь метров статуи скрыты под землёй.",draw(c){
+  sky(c,"#ffe0c7","#fff5e8",700);ground(c,700,"#ead7b9");
+  c.fillStyle="#d9c3a2";for(let i=0;i<6;i++)c.fillRect(0,712+i*32,S,3);
+  const t=hall(c,450,650,520,150,"#f4c542","#c99a1f");hall(c,450,t+12,340,70,"#f4c542","#c99a1f");
+  tree(c,80,700,90,"#2f7d66");tree(c,820,700,90,"#2f7d66");
+  c.strokeStyle="rgba(255,255,255,.85)";c.lineWidth=7;c.lineCap="round";[410,450,490].forEach((x,i)=>{c.beginPath();c.moveTo(x,720);c.bezierCurveTo(x-40,660,x+40,600,x+(i-1)*20,520);c.stroke()});
+  c.fillStyle="#7a5a3a";c.fillRect(400,800,14,60);c.fillRect(486,800,14,60);rr(c,370,720,160,96,24);c.fill();
+  c.fillStyle="#5e4329";c.beginPath();c.ellipse(450,722,82,16,0,0,7);c.fill();c.lineWidth=12;c.strokeStyle="#7a5a3a";c.beginPath();c.arc(370,750,22,1.6,4.7);c.stroke();c.beginPath();c.arc(530,750,22,-1.6,1.6);c.stroke();
+  face(c,450,770,.9,"#3a2330");
+}},
+{name:"Парк Бэйхай",fact:"Белую дагобу на острове в парке Бэйхай построили в 1651 году. Её высота почти 36 метров, и она видна из многих районов старого города.",draw(c){
+  sky(c,"#cde6f5","#f7fbff",600);cloud(c,80,140,.9,"#fff");cloud(c,640,110,1,"#fff");
+  c.fillStyle="#7fb58a";c.beginPath();c.moveTo(40,610);c.quadraticCurveTo(450,250,860,610);c.fill();
+  tree(c,230,570,60,"#4f9a72");tree(c,680,570,60,"#4f9a72");
+  c.fillStyle="#f8f6f1";rr(c,370,396,160,110,6);c.fill();rr(c,388,354,124,46,6);c.fill();
+  c.beginPath();c.arc(450,300,78,0,7);c.fill();c.fillStyle="#c8323a";c.beginPath();c.moveTo(430,350);c.lineTo(430,318);c.arc(450,318,20,Math.PI,0);c.lineTo(470,350);c.fill();
+  c.fillStyle="#f8f6f1";c.beginPath();c.moveTo(422,226);c.lineTo(436,140);c.lineTo(464,140);c.lineTo(478,226);c.fill();
+  c.strokeStyle="#ddd5c8";c.lineWidth=3;for(let y=150;y<224;y+=12){c.beginPath();c.moveTo(430,y);c.lineTo(470,y);c.stroke()}
+  c.fillStyle="#eab04a";c.beginPath();c.ellipse(450,138,40,10,0,0,7);c.fill();c.beginPath();c.arc(450,116,12,0,7);c.fill();
+  hall(c,450,610,260,60);
+  c.fillStyle="#9fd0de";c.fillRect(0,610,S,290);ripples(c,22,640,250,"rgba(255,255,255,.6)");
+  [[200,760,"#ffd75a"],[640,800,"#fff"]].forEach(([x,y,col])=>{c.fillStyle=col;c.beginPath();c.ellipse(x,y,70,26,0,0,7);c.fill();c.beginPath();c.arc(x+44,y-44,26,0,7);c.fill();c.fillStyle="#f29a3a";c.beginPath();c.moveTo(x+66,y-46);c.lineTo(x+92,y-40);c.lineTo(x+66,y-34);c.fill();c.fillStyle="#3a2330";c.beginPath();c.arc(x+50,y-50,4,0,7);c.fill()});
+}},
+{name:"Озеро Хоухай вечером",fact:"Хоухай — одно из озёр Шичахай в центре Пекина. По вечерам вдоль берегов зажигаются фонари, а летом по воде катаются на лодках.",draw(c){
+  sky(c,"#1f2a52","#6b4878",560);stars(c,70,7,420);c.fillStyle="#fff3c4";c.beginPath();c.arc(720,130,52,0,7);c.fill();
+  c.fillStyle="#2a2440";[[0,360,200],[180,330,240],[400,370,180],[560,320,220],[760,350,160]].forEach(([x,y,w])=>{c.fillRect(x,y,w,560-y);c.beginPath();c.moveTo(x-20,y+6);c.quadraticCurveTo(x+w/2,y-34,x+w+20,y+6);c.fill()});
+  c.fillStyle="#ffd36e";const R=rng(3);for(let i=0;i<26;i++){c.globalAlpha=.6+R()*.4;rr(c,R()*880,400+R()*130,22,28,4);c.fill()}c.globalAlpha=1;
+  c.fillStyle=grad(c,560,900,"#2b3f6e","#1a2648");c.fillRect(0,560,S,340);
+  const ls=()=>{c.strokeStyle="#140f22";c.lineWidth=3;c.beginPath();c.moveTo(-10,200);c.quadraticCurveTo(450,330,910,200);c.stroke();[90,270,450,630,810].forEach(x=>{const y=200+(1-Math.pow((x-450)/460,2))*64;lantern(c,x,y,.85)})};
+  ls();c.save();c.globalAlpha=.3;c.translate(0,1120);c.scale(1,-1);c.beginPath();c.rect(0,0,S,560);c.clip();ls();c.restore();
+  ripples(c,16,600,280,"rgba(255,220,150,.35)");
+  c.fillStyle="#7a4a2a";c.beginPath();c.moveTo(560,780);c.lineTo(800,780);c.lineTo(770,820);c.lineTo(590,820);c.fill();c.fillStyle="#c8323a";c.fillRect(620,730,120,50);c.fillStyle="#f2b63b";c.fillRect(610,722,140,10);
+}},
+{name:"Стадион «Птичье гнездо»",fact:"Национальный стадион построили к Олимпиаде 2008 года. Его стальной каркас из переплетённых балок похож на птичье гнездо.",draw(c){
+  sky(c,"#2c2e5e","#f4a080",720);stars(c,30,11,300);ground(c,720,"#5a5370");
+  c.strokeStyle="rgba(255,255,255,.12)";c.lineWidth=3;for(let i=-8;i<9;i++){c.beginPath();c.moveTo(450,720);c.lineTo(450+i*140,900);c.stroke()}
+  c.save();c.beginPath();c.ellipse(450,600,390,200,0,Math.PI,0);c.lineTo(840,700);c.quadraticCurveTo(450,760,60,700);c.closePath();c.clip();
+  c.fillStyle="#e2483f";c.fillRect(0,380,S,400);
+  const R=rng(5);c.strokeStyle="#cfd2de";c.lineCap="round";for(let i=0;i<70;i++){c.lineWidth=5+R()*5;const x=40+R()*820;c.beginPath();c.moveTo(x,380);c.lineTo(x+(R()-.5)*500,760);c.stroke()}
+  c.restore();
+  c.fillStyle="#ff8a66";c.beginPath();c.ellipse(450,412,250,34,0,0,7);c.fill();c.fillStyle="rgba(255,240,200,.6)";c.beginPath();c.ellipse(450,400,190,18,0,0,7);c.fill();
+  [[150,800],[300,830],[620,820],[760,805]].forEach(([x,y])=>{c.fillStyle="#2a2238";c.beginPath();c.arc(x,y-34,9,0,7);c.fill();rr(c,x-8,y-26,16,26,6);c.fill()});
+}},
+{name:"Национальный театр",fact:"Купол Национального центра исполнительских искусств из титана и стекла окружён искусственным озером. В театр входят через тоннель под водой.",draw(c){
+  sky(c,"#bfe1f2","#fff3e8",540);cloud(c,640,120,1,"#fff");
+  c.fillStyle="#9fbf95";c.fillRect(0,500,S,40);for(let x=20;x<S;x+=70){c.beginPath();c.arc(x,500,30,0,7);c.fill()}
+  c.fillStyle=grad(c,540,900,"#9cc6dc","#cfe6ef");c.fillRect(0,540,S,360);
+  const dome=()=>{c.fillStyle=grad(c,320,540,"#e9edf2","#a8b1bd");c.beginPath();c.ellipse(450,540,340,220,0,Math.PI,0);c.fill();
+    c.save();c.beginPath();c.ellipse(450,540,340,220,0,Math.PI,0);c.clip();c.fillStyle="rgba(242,196,96,.8)";c.beginPath();c.ellipse(450,540,90,240,0,0,7);c.fill();
+    c.strokeStyle="rgba(150,100,30,.5)";c.lineWidth=2;for(let y=330;y<540;y+=18){c.beginPath();c.moveTo(350,y);c.lineTo(550,y);c.stroke()}c.restore();
+    c.fillStyle="rgba(255,255,255,.4)";c.beginPath();c.ellipse(330,400,70,20,-.5,0,7);c.fill()};
+  dome();c.save();c.globalAlpha=.35;c.translate(0,1080);c.scale(1,-1);dome();c.restore();
+  ripples(c,18,580,300,"rgba(255,255,255,.6)");
+}},
+{name:"Воздушные змеи",fact:"Китай считают родиной воздушного змея. Пекинские змеи в форме ласточки ярко расписывают и запускают весной в парках.",draw(c){
+  sky(c,"#a2d5f2","#eef8ff");cloud(c,80,160,1,"#fff");cloud(c,620,90,.8,"#fff");
+  c.fillStyle="#9fd08e";c.beginPath();c.moveTo(0,760);c.quadraticCurveTo(450,640,900,760);c.lineTo(900,900);c.lineTo(0,900);c.fill();
+  const ks=[[200,260,1,"#e23a3a","#f2b63b"],[460,170,1.1,"#2f6fb3","#eab04a"],[700,300,.9,"#3f9e8a","#f6a6c1"],[330,480,.8,"#f29a3a","#2f6fb3"],[620,520,.75,"#c8323a","#3f9e8a"]];
+  c.strokeStyle="rgba(58,35,48,.5)";c.lineWidth=2;ks.forEach(([x,y])=>{c.beginPath();c.moveTo(x,y+40);c.quadraticCurveTo(x*.7+135,700,450,880);c.stroke()});
+  ks.forEach(([x,y,s,a,b])=>{c.save();c.translate(x,y);c.scale(s,s);c.fillStyle=a;c.beginPath();c.moveTo(0,-20);c.quadraticCurveTo(-90,-70,-140,6);c.quadraticCurveTo(-60,-4,0,32);c.quadraticCurveTo(60,-4,140,6);c.quadraticCurveTo(90,-70,0,-20);c.fill();
+    c.fillStyle=b;c.beginPath();c.moveTo(0,30);c.lineTo(-46,130);c.lineTo(0,96);c.lineTo(46,130);c.closePath();c.fill();c.beginPath();c.ellipse(0,10,26,40,0,0,7);c.fill();
+    c.fillStyle="#fffaf1";c.beginPath();c.arc(0,-36,28,0,7);c.fill();face(c,0,-36,.55);c.restore()});
+}},
+{name:"Танхулу",fact:"Танхулу — плоды боярышника в хрустящей сахарной глазури, нанизанные на палочку. Это любимая зимняя уличная сладость Пекина.",draw(c){
+  sky(c,"#ffd5de","#fff0f2");c.fillStyle="#ffc4d0";for(let y=40;y<S;y+=120)for(let x=(y/120%2)*60;x<S;x+=120){c.beginPath();c.arc(x,y,10,0,7);c.fill()}
+  [[300,860,-.25],[460,880,0],[620,860,.25]].forEach(([x,y,a])=>{c.save();c.translate(x,y);c.rotate(a);c.fillStyle="#d9a85e";rr(c,-7,-760,14,760,6);c.fill();
+    for(let i=0;i<6;i++){const by=-200-i*92;c.fillStyle="#d62f3a";c.beginPath();c.arc(0,by,50,0,7);c.fill();c.fillStyle="rgba(255,255,255,.3)";c.beginPath();c.arc(0,by,50,3.6,5.3);c.arc(0,by,40,5.3,3.6,true);c.fill();
+      c.fillStyle="#fff";c.beginPath();c.ellipse(-18,by-22,12,7,-.6,0,7);c.fill();if(i===5)face(c,0,by+6,.7,"#5a1d22")}
+    c.restore()});
+  snow(c,40,9);
+}},
+{name:"Пельмени цзяоцзы",fact:"Цзяоцзы лепят всей семьёй на китайский Новый год. По форме они напоминают старинные слитки и, по поверью, приносят богатство.",draw(c){
+  c.fillStyle="#e7bf95";c.fillRect(0,0,S,S);c.strokeStyle="rgba(150,100,60,.25)";c.lineWidth=3;for(let y=20;y<S;y+=46){c.beginPath();c.moveTo(0,y);c.bezierCurveTo(300,y+20,600,y-20,900,y);c.stroke()}
+  plate(c,440,480,330);
+  const dumpling=(x,y,a)=>{c.save();c.translate(x,y);c.rotate(a);c.fillStyle="rgba(58,35,48,.12)";c.beginPath();c.ellipse(4,30,84,22,0,0,7);c.fill();
+    c.fillStyle="#fffaf0";c.beginPath();c.moveTo(-86,20);c.quadraticCurveTo(-60,-70,0,-72);c.quadraticCurveTo(60,-70,86,20);c.quadraticCurveTo(0,46,-86,20);c.fill();
+    c.strokeStyle="#ead9c1";c.lineWidth=3;for(let i=-3;i<=3;i++){c.beginPath();c.moveTo(i*16,-66+Math.abs(i)*5);c.quadraticCurveTo(i*18+8,-50,i*20,-30+Math.abs(i)*6);c.stroke()}
+    face(c,0,0,.75);c.restore()};
+  [[440,300,0],[290,380,-.4],[600,380,.4],[440,470,0],[270,580,-.2],[610,580,.2],[440,660,0]].forEach(p=>dumpling(p[0],p[1],p[2]));
+  c.fillStyle="#fff";c.beginPath();c.arc(800,110,76,0,7);c.fill();c.fillStyle="#4a2416";c.beginPath();c.arc(800,110,56,0,7);c.fill();
+  chop(c,170,830,-.35);
+}},
+{name:"Лапша чжацзянмянь",fact:"Чжацзянмянь — пекинская лапша с густым соусом из соевой пасты и рубленой свинины. Сверху кладут свежий огурец и редис.",draw(c){
+  c.fillStyle="#dceaf3";c.fillRect(0,0,S,S);c.fillStyle="#c8dceb";for(let i=0;i<S;i+=80){c.fillRect(i,0,36,S);c.fillRect(0,i,S,36)}
+  c.fillStyle="rgba(58,35,48,.15)";c.beginPath();c.arc(462,486,340,0,7);c.fill();c.fillStyle="#fff";c.beginPath();c.arc(450,470,340,0,7);c.fill();
+  c.strokeStyle="#2f6fb3";c.lineWidth=10;c.beginPath();c.arc(450,470,318,0,7);c.stroke();
+  c.save();c.beginPath();c.arc(450,470,290,0,7);c.clip();c.fillStyle="#f6dc98";c.fillRect(0,0,S,S);c.strokeStyle="#e9c56a";c.lineWidth=7;
+  for(let i=0;i<34;i++){const y=180+i*18;c.beginPath();c.moveTo(150,y);for(let x=150;x<760;x+=30)c.quadraticCurveTo(x+15,y+(i%2?14:-14),x+30,y);c.stroke()}c.restore();
+  c.fillStyle="#6b3218";c.beginPath();c.ellipse(450,450,130,100,0,0,7);c.fill();c.fillStyle="#8c4626";const R=rng(4);for(let i=0;i<30;i++){c.beginPath();c.arc(370+R()*160,390+R()*120,6+R()*6,0,7);c.fill()}
+  c.fillStyle="#7cb56a";for(let i=0;i<9;i++){c.save();c.translate(600,520);c.rotate(-.2+i*.05);rr(c,0,i*8-30,140,7,3);c.fill();c.restore()}
+  c.fillStyle="#f6a6c1";for(let i=0;i<8;i++){rr(c,240+i*6,580+i*8,120,7,3);c.fill()}
+  c.fillStyle="#9fd08e";for(let i=0;i<14;i++){c.beginPath();c.arc(330+(i*37)%240,290+(i*29)%60,9,0,7);c.fill()}
+  face(c,450,440,1,"#fff3dc");chop(c,760,800,-.6,"#3a2330");
+}},
+{name:"Медный хого",fact:"Пекинский хого готовят в медном котле с трубой посередине: внутри горит уголь, а вокруг кипит бульон. В нём быстро варят тонкие ломтики баранины.",draw(c){
+  c.fillStyle="#ffe2cf";c.fillRect(0,0,S,S);c.fillStyle="#b97b52";c.fillRect(0,640,S,260);c.fillStyle="rgba(0,0,0,.08)";for(let y=660;y<S;y+=40)c.fillRect(0,y,S,4);
+  c.fillStyle="#ff9a3c";c.beginPath();c.ellipse(450,770,150,30,0,0,7);c.fill();
+  c.fillStyle="#b8652e";rr(c,330,690,240,90,16);c.fill();
+  c.fillStyle=grad(c,520,720,"#e08a4c","#a8521f");c.beginPath();c.moveTo(220,540);c.lineTo(680,540);c.quadraticCurveTo(670,710,560,720);c.lineTo(340,720);c.quadraticCurveTo(230,710,220,540);c.fill();
+  c.fillStyle="#f1e3c2";c.beginPath();c.ellipse(450,540,230,46,0,0,7);c.fill();
+  c.fillStyle="#c97a40";c.fillRect(415,300,70,240);c.fillStyle="#a8521f";c.fillRect(400,290,100,22);c.fillRect(415,380,70,10);
+  c.fillStyle="rgba(255,255,255,.3)";c.fillRect(425,320,12,200);
+  c.strokeStyle="rgba(255,255,255,.8)";c.lineWidth=7;c.lineCap="round";[300,600].forEach(x=>{c.beginPath();c.moveTo(x,520);c.bezierCurveTo(x-30,460,x+30,420,x,340);c.stroke()});
+  face(c,450,640,1.1,"#5a2a12");
+  c.fillStyle="#fff";c.beginPath();c.ellipse(140,800,120,50,0,0,7);c.fill();for(let i=0;i<5;i++){c.fillStyle="#e98c8c";c.beginPath();c.ellipse(80+i*30,795,24,16,0,0,7);c.fill();c.strokeStyle="#fff";c.lineWidth=3;c.beginPath();c.moveTo(66+i*30,790);c.lineTo(94+i*30,800);c.stroke()}
+  c.fillStyle="#fff";c.beginPath();c.ellipse(770,800,110,48,0,0,7);c.fill();c.fillStyle="#6aa95a";for(let i=0;i<6;i++){c.beginPath();c.ellipse(720+i*20,790,16,30,.4,0,7);c.fill()}
+}},
+{name:"Маска пекинской оперы",fact:"В пекинской опере цвет грима рассказывает о характере героя: красный означает верность и храбрость, белый — хитрость, чёрный — прямоту.",draw(c){
+  c.fillStyle="#b52a33";c.fillRect(0,0,S,S);c.fillStyle="rgba(0,0,0,.14)";for(let x=0;x<S;x+=60){c.beginPath();c.ellipse(x,450,16,500,0,0,7);c.fill()}
+  c.fillStyle="#f2b63b";c.fillRect(0,0,S,40);for(let x=0;x<S;x+=60){c.beginPath();c.arc(x+30,40,30,0,Math.PI);c.fill()}
+  c.fillStyle="#fffaf4";c.beginPath();c.ellipse(450,500,230,290,0,0,7);c.fill();
+  c.fillStyle="#d8323b";c.beginPath();c.moveTo(450,230);c.quadraticCurveTo(380,330,450,410);c.quadraticCurveTo(520,330,450,230);c.fill();
+  [-1,1].forEach(k=>{c.fillStyle="#2b1a20";c.beginPath();c.moveTo(450+k*30,430);c.quadraticCurveTo(450+k*120,350,450+k*210,410);c.quadraticCurveTo(450+k*150,520,450+k*40,480);c.fill();
+    c.fillStyle="#fffaf4";c.beginPath();c.ellipse(450+k*110,450,28,16,k*.2,0,7);c.fill();c.fillStyle="#2b1a20";c.beginPath();c.arc(450+k*110,452,9,0,7);c.fill();
+    c.fillStyle="#d8323b";c.beginPath();c.ellipse(450+k*130,580,46,56,0,0,7);c.fill()});
+  c.fillStyle="#2b1a20";c.beginPath();c.ellipse(450,560,26,20,0,0,7);c.fill();c.fillStyle="#d8323b";c.beginPath();c.moveTo(380,660);c.quadraticCurveTo(450,710,520,660);c.quadraticCurveTo(450,690,380,660);c.fill();
+  c.fillStyle="#f2b63b";c.beginPath();c.ellipse(450,230,250,80,0,Math.PI,0);c.fill();
+  [["#3f9e8a",250],["#e23a3a",340],["#2f6fb3",450],["#e23a3a",560],["#3f9e8a",650]].forEach(([col,x])=>{c.fillStyle=col;c.beginPath();c.arc(x,x===450?140:180,34,0,7);c.fill()});
+  c.fillStyle="#eab04a";c.beginPath();c.arc(210,300,26,0,7);c.arc(690,300,26,0,7);c.fill();
+}},
+{name:"Старая чайная",fact:"В старых пекинских чайных выступали сказители, а пожилые завсегдатаи приносили с собой певчих птиц в клетках.",draw(c){
+  c.fillStyle="#f3e0c2";c.fillRect(0,0,S,640);c.fillStyle="#b9834f";c.fillRect(0,640,S,260);c.fillStyle="rgba(0,0,0,.08)";for(let x=0;x<S;x+=90)c.fillRect(x,640,4,260);
+  c.fillStyle="#d7ecd0";c.fillRect(300,140,300,260);c.strokeStyle="#7a4a2a";c.lineWidth=12;c.strokeRect(300,140,300,260);c.lineWidth=6;
+  for(let i=1;i<5;i++){c.beginPath();c.moveTo(300+i*60,140);c.lineTo(300+i*60,400);c.stroke();c.beginPath();c.moveTo(300,140+i*52);c.lineTo(600,140+i*52);c.stroke()}
+  lantern(c,140,0,1);
+  c.fillStyle="#6b3a22";rr(c,160,600,500,40,10);c.fill();c.fillRect(200,640,26,180);c.fillRect(594,640,26,180);
+  teapot(c,380,540,.62,"#3f9e8a");cup(c,550,580,.7);cup(c,260,585,.6);
+  const bx=780,by=430;c.strokeStyle="#a8743f";c.lineWidth=4;c.beginPath();c.moveTo(bx,0);c.lineTo(bx,by-140);c.stroke();
+  for(let i=-3;i<=3;i++){c.beginPath();c.moveTo(bx+i*24,by+110);c.quadraticCurveTo(bx+i*30,by-120,bx,by-140);c.stroke()}
+  c.fillStyle="#7a4a2a";rr(c,bx-90,by+100,180,22,6);c.fill();
+  c.fillStyle="#ffd75a";c.beginPath();c.ellipse(bx,by+40,34,26,0,0,7);c.fill();c.beginPath();c.arc(bx+26,by+12,20,0,7);c.fill();c.fillStyle="#f29a3a";c.beginPath();c.moveTo(bx+44,by+10);c.lineTo(bx+60,by+16);c.lineTo(bx+44,by+22);c.fill();c.fillStyle="#3a2330";c.beginPath();c.arc(bx+32,by+8,3.5,0,7);c.fill();
+  c.strokeStyle="#7a4a2a";c.lineWidth=4;c.beginPath();c.moveTo(bx-60,by+60);c.lineTo(bx+60,by+60);c.stroke();
+}},
+{name:"Велосипеды в хутуне",fact:"Когда‑то Китай называли «королевством велосипедов». В узких хутунах велосипед и сегодня один из самых удобных способов передвижения.",draw(c){
+  bricks(c,0,760,"#a7b3c0","#95a1b0");ground(c,760,"#cdbca5");
+  c.fillStyle="#c8323a";c.fillRect(620,330,200,430);c.fillStyle="#f2b63b";c.beginPath();c.arc(700,560,10,0,7);c.arc(740,560,10,0,7);c.fill();c.fillStyle="#5d6977";c.fillRect(600,300,240,34);
+  c.strokeStyle="#6b4a2a";c.lineWidth=14;c.lineCap="round";c.beginPath();c.moveTo(0,90);c.quadraticCurveTo(250,140,460,60);c.stroke();c.lineWidth=8;c.beginPath();c.moveTo(220,120);c.lineTo(260,200);c.stroke();
+  [[120,110],[300,100],[400,70],[260,210],[180,150]].forEach(([x,y])=>{c.fillStyle="#f28b2e";c.beginPath();c.arc(x,y+26,26,0,7);c.fill();c.fillStyle="#4f8a3c";c.fillRect(x-6,y-2,12,8)});
+  const bike=(x,y,s,col,basket)=>{c.save();c.translate(x,y);c.scale(s,s);c.strokeStyle="#3a2330";[-110,110].forEach(wx=>{c.lineWidth=9;c.beginPath();c.arc(wx,0,72,0,7);c.stroke();c.lineWidth=2;for(let a=0;a<6.28;a+=.52){c.beginPath();c.moveTo(wx,0);c.lineTo(wx+70*Math.cos(a),70*Math.sin(a));c.stroke()}});
+    c.strokeStyle=col;c.lineWidth=12;c.lineJoin="round";c.beginPath();c.moveTo(-110,0);c.lineTo(-30,-100);c.lineTo(80,-100);c.lineTo(110,0);c.moveTo(-30,-100);c.lineTo(0,0);c.lineTo(80,-100);c.moveTo(-110,0);c.lineTo(0,0);c.moveTo(80,-100);c.lineTo(70,-140);c.stroke();
+    c.fillStyle="#3a2330";rr(c,-62,-124,64,18,8);c.fill();c.lineWidth=8;c.strokeStyle="#3a2330";c.beginPath();c.moveTo(48,-140);c.lineTo(100,-148);c.stroke();
+    if(basket){c.fillStyle="#d9a85e";rr(c,96,-150,80,60,8);c.fill();c.fillStyle="#f6a6c1";c.beginPath();c.arc(116,-158,16,0,7);c.arc(146,-162,16,0,7);c.fill();c.fillStyle="#ffd75a";c.beginPath();c.arc(130,-172,14,0,7);c.fill()}c.restore()};
+  bike(270,690,1,"#2f6fb3",true);bike(560,710,.85,"#3f9e8a",false);
+  c.fillStyle="#7d5f68";rr(c,30,760,100,80,10);c.fill();tree(c,80,770,50,"#5fa679");
+}},
+{name:"Велорикша",fact:"На велорикшах туристов катают по старым хутунам вокруг озёр Шичахай, а возница по дороге рассказывает истории о старых домах.",draw(c){
+  bricks(c,0,740,"#b3aab8","#a198a8");ground(c,740,"#d6c4aa");
+  c.fillStyle="#5d6977";c.fillRect(0,180,S,30);for(let x=0;x<S;x+=26){c.beginPath();c.arc(x+13,210,13,0,Math.PI);c.fill()}
+  lantern(c,140,210,.8);lantern(c,780,210,.8);
+  c.strokeStyle="#3a2330";c.lineWidth=10;[[250,720,80],[640,730,62],[540,730,62]].forEach(([x,y,r])=>{c.beginPath();c.arc(x,y,r,0,7);c.stroke()});
+  c.fillStyle="#c8323a";rr(c,470,520,240,150,24);c.fill();c.fillStyle="#9e2229";rr(c,490,560,200,30,10);c.fill();
+  c.fillStyle="#f2b63b";c.beginPath();c.moveTo(440,520);c.quadraticCurveTo(470,330,600,320);c.quadraticCurveTo(730,330,740,520);c.closePath();c.fill();
+  c.fillStyle="#e23a3a";c.beginPath();c.moveTo(450,500);c.quadraticCurveTo(480,350,600,342);c.quadraticCurveTo(720,350,730,500);c.closePath();c.fill();
+  c.strokeStyle="#f2b63b";c.lineWidth=4;for(let x=470;x<730;x+=24){c.beginPath();c.moveTo(x,515);c.lineTo(x,535);c.stroke()}
+  c.strokeStyle="#2f6fb3";c.lineWidth=12;c.lineCap="round";c.beginPath();c.moveTo(250,720);c.lineTo(330,600);c.lineTo(470,620);c.moveTo(330,600);c.lineTo(310,540);c.moveTo(250,720);c.lineTo(400,700);c.lineTo(470,640);c.stroke();
+  c.fillStyle="#3a2330";rr(c,280,520,70,18,8);c.fill();c.lineWidth=8;c.strokeStyle="#3a2330";c.beginPath();c.moveTo(250,720);c.lineTo(230,600);c.lineTo(190,590);c.stroke();
+  c.fillStyle="#f6a6c1";c.beginPath();c.arc(560,500,30,0,7);c.arc(640,500,30,0,7);c.fill();
+}},
+{name:"Каллиграфия",fact:"На Новый год иероглиф 福 («счастье») часто вешают вверх ногами. «Перевёрнутый» по‑китайски звучит как «пришёл», и выходит «счастье пришло».",draw(c){
+  c.fillStyle="#8a5a3b";c.fillRect(0,0,S,S);c.strokeStyle="rgba(0,0,0,.1)";c.lineWidth=3;for(let y=30;y<S;y+=50){c.beginPath();c.moveTo(0,y);c.bezierCurveTo(300,y+15,600,y-15,900,y);c.stroke()}
+  c.fillStyle="#f8efe0";c.fillRect(90,90,720,720);
+  c.save();c.translate(450,450);c.rotate(Math.PI/4);c.fillStyle="#d62f3a";c.fillRect(-230,-230,460,460);c.strokeStyle="#f2b63b";c.lineWidth=10;c.strokeRect(-210,-210,420,420);c.restore();
+  c.save();c.translate(450,450);c.rotate(Math.PI);c.fillStyle="#2b1a20";c.font="300px 'Ma Shan Zheng','KaiTi','STKaiti',serif";c.textAlign="center";c.textBaseline="middle";c.fillText("福",0,10);c.restore();
+  c.fillStyle="#2b2b30";rr(c,620,650,160,110,18);c.fill();c.fillStyle="#111";c.beginPath();c.ellipse(700,700,54,30,0,0,7);c.fill();
+  c.save();c.translate(170,740);c.rotate(-.7);c.fillStyle="#c9a473";rr(c,-10,-260,20,250,8);c.fill();c.fillStyle="#2b1a20";c.beginPath();c.moveTo(-14,-10);c.quadraticCurveTo(0,60,0,70);c.quadraticCurveTo(0,60,14,-10);c.fill();c.restore();
+  c.fillStyle="#c8323a";rr(c,700,120,70,70,8);c.fill();c.strokeStyle="#f8efe0";c.lineWidth=4;c.strokeRect(712,132,46,46);
+}},
+{name:"Праздник Весны",fact:"По легенде красный цвет и треск хлопушек отпугивают чудовище Нянь. Поэтому на китайский Новый год всё вокруг украшают красным.",draw(c){
+  sky(c,"#1d1f4a","#4a2a5e",760);stars(c,40,21,500);
+  const burst=(x,y,r,col)=>{c.strokeStyle=col;c.fillStyle=col;c.lineWidth=4;c.lineCap="round";for(let a=0;a<6.28;a+=.26){c.beginPath();c.moveTo(x+Math.cos(a)*r*.25,y+Math.sin(a)*r*.25);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);c.stroke();c.beginPath();c.arc(x+Math.cos(a)*(r+12),y+Math.sin(a)*(r+12),5,0,7);c.fill()}};
+  burst(250,200,110,"#f2b63b");burst(620,150,90,"#f6a6c1");burst(720,360,70,"#7fd3c2");burst(400,380,60,"#ff7a5c");
+  ground(c,760,"#f4f0f6");
+  c.fillStyle="#c8323a";c.fillRect(0,560,S,200);c.fillStyle="#5d4a52";c.fillRect(0,540,S,26);
+  c.fillStyle="#3a2330";c.fillRect(330,600,240,160);c.fillStyle="#d62f3a";c.fillRect(340,610,105,150);c.fillRect(455,610,105,150);
+  c.fillStyle="#f2b63b";[[392,680],[507,680]].forEach(([x,y])=>{c.save();c.translate(x,y);c.rotate(Math.PI/4);c.fillRect(-30,-30,60,60);c.restore()});
+  c.fillStyle="#e23a3a";c.fillRect(270,590,44,170);c.fillRect(586,590,44,170);
+  lantern(c,220,540,.7);lantern(c,680,540,.7);
+  c.strokeStyle="#3a2330";c.lineWidth=3;c.beginPath();c.moveTo(100,540);c.lineTo(100,840);c.stroke();
+  for(let i=0;i<12;i++){c.fillStyle=i%2?"#d62f3a":"#e8433f";c.save();c.translate(100,570+i*22);c.rotate(i%2?.5:-.5);rr(c,-30,-8,60,16,4);c.fill();c.fillStyle="#f2b63b";c.fillRect(-30,-8,8,16);c.restore()}
+  snow(c,20,4);
+}},
+{name:"Праздник середины осени",fact:"В Праздник середины осени семьи любуются полной луной и угощаются юэбинами — круглыми пряниками со сладкой начинкой.",draw(c){
+  sky(c,"#16204a","#3f3a74");stars(c,60,13,560);
+  c.fillStyle="rgba(255,240,190,.18)";c.beginPath();c.arc(450,300,250,0,7);c.fill();c.fillStyle="#fff1c2";c.beginPath();c.arc(450,300,200,0,7);c.fill();
+  c.fillStyle="rgba(220,200,140,.35)";[[380,240,40],[520,330,30],[460,390,22],[540,220,18]].forEach(([x,y,r])=>{c.beginPath();c.arc(x,y,r,0,7);c.fill()});
+  c.fillStyle="#6b4a5a";c.fillRect(0,640,S,260);
+  plate(c,470,750,220);
+  [[380,720],[560,720],[470,810]].forEach(([x,y])=>{c.fillStyle="#c98a3c";c.beginPath();for(let a=0;a<6.28;a+=.4){c.moveTo(x+68*Math.cos(a)+12,y+46*Math.sin(a));c.arc(x+68*Math.cos(a),y+46*Math.sin(a),12,0,7)}c.fill();c.fillStyle="#e2a75a";c.beginPath();c.ellipse(x,y,66,44,0,0,7);c.fill();
+    c.strokeStyle="#b8732a";c.lineWidth=3;c.beginPath();c.ellipse(x,y,44,28,0,0,7);c.stroke();c.beginPath();c.moveTo(x-30,y);c.lineTo(x+30,y);c.moveTo(x,y-20);c.lineTo(x,y+20);c.stroke()});
+  c.fillStyle="#fff";c.beginPath();c.ellipse(140,740,60,50,0,0,7);c.fill();c.beginPath();c.arc(150,680,40,0,7);c.fill();c.beginPath();c.ellipse(130,620,12,40,-.2,0,7);c.ellipse(165,620,12,40,.2,0,7);c.fill();
+  c.fillStyle="#f6a6c1";c.beginPath();c.ellipse(130,624,5,24,-.2,0,7);c.ellipse(165,624,5,24,.2,0,7);c.fill();face(c,150,685,.6);
+  c.strokeStyle="#5a3a2a";c.lineWidth=6;c.beginPath();c.moveTo(900,80);c.quadraticCurveTo(760,120,700,220);c.stroke();
+  c.fillStyle="#ffd75a";const R=rng(8);for(let i=0;i<30;i++){const t=R();c.beginPath();c.arc(900-200*t+(R()-.5)*50,80+140*t+(R()-.5)*40,5,0,7);c.fill()}
+}},
+{name:"Танец дракона",fact:"В танце дракона команда несёт длинное тело на шестах. По поверью, чем длиннее дракон, тем больше удачи он приносит.",draw(c){
+  sky(c,"#ffd8b8","#fff1e2",700);ground(c,700,"#e8c9a0");c.fillStyle="rgba(150,100,60,.15)";for(let i=0;i<6;i++)c.fillRect(0,720+i*32,S,3);
+  const R=rng(17),cols=["#e23a3a","#f2b63b","#3f9e8a","#2f6fb3"];for(let i=0;i<50;i++){c.fillStyle=cols[i%4];c.fillRect(R()*S,R()*640,8,14)}
+  const pts=[];for(let i=0;i<14;i++)pts.push([840-i*48,430+Math.sin(i*.7)*90]);
+  c.strokeStyle="#7a5534";c.lineWidth=8;pts.forEach(([x,y],i)=>{if(i%3===1){c.beginPath();c.moveTo(x,y+40);c.lineTo(x,780);c.stroke()}});
+  const hx=130,hy=390;c.beginPath();c.moveTo(hx,hy+90);c.lineTo(hx,780);c.stroke();
+  pts.forEach(([x,y])=>{c.fillStyle="#d62f3a";c.beginPath();c.arc(x,y+30,42,0,Math.PI);c.fill();c.fillStyle="#3f9e8a";c.beginPath();c.arc(x,y,52,0,7);c.fill();
+    c.strokeStyle="#f2b63b";c.lineWidth=4;c.beginPath();c.arc(x,y+6,26,Math.PI*1.1,Math.PI*1.9);c.stroke();c.fillStyle="#f2b63b";c.beginPath();c.moveTo(x-14,y-48);c.lineTo(x,y-80);c.lineTo(x+14,y-48);c.fill()});
+  c.fillStyle="#f2b63b";c.beginPath();c.moveTo(hx+30,hy-80);c.lineTo(hx+70,hy-150);c.lineTo(hx+60,hy-70);c.fill();c.beginPath();c.moveTo(hx-30,hy-80);c.lineTo(hx-60,hy-150);c.lineTo(hx-20,hy-70);c.fill();
+  c.fillStyle="#d62f3a";c.beginPath();c.arc(hx,hy,90,0,7);c.fill();c.fillStyle="#3f9e8a";c.beginPath();c.ellipse(hx-20,hy+40,74,46,0,0,7);c.fill();
+  c.fillStyle="#fffaf1";c.beginPath();c.arc(hx-30,hy-24,26,0,7);c.arc(hx+34,hy-24,26,0,7);c.fill();c.fillStyle="#3a2330";c.beginPath();c.arc(hx-26,hy-22,13,0,7);c.arc(hx+38,hy-22,13,0,7);c.fill();
+  c.fillStyle="#fff";c.beginPath();c.arc(hx-22,hy-27,4,0,7);c.arc(hx+42,hy-27,4,0,7);c.fill();
+  c.strokeStyle="#f2b63b";c.lineWidth=6;c.lineCap="round";[-1,1].forEach(k=>{c.beginPath();c.moveTo(hx-20+k*40,hy+30);c.bezierCurveTo(hx-20+k*110,hy+20,hx-20+k*90,hy+110,hx-20+k*140,hy+100);c.stroke()});
+  c.fillStyle="#fff";c.beginPath();c.ellipse(hx-20,hy+56,40,10,0,0,7);c.fill();
+}},
+{name:"Каменные львы",fact:"Каменные львы охраняют ворота парами: лев держит лапой шар, а львица придерживает львёнка.",draw(c){
+  c.fillStyle="#c8323a";c.fillRect(0,0,S,700);c.fillStyle="#a8262e";for(let x=0;x<S;x+=50)c.fillRect(x,0,4,700);
+  c.fillStyle="#3a2330";c.fillRect(310,180,280,520);c.fillStyle="#d62f3a";c.fillRect(322,192,124,508);c.fillRect(454,192,124,508);
+  c.fillStyle="#f2b63b";for(let r=0;r<6;r++)for(let k=0;k<3;k++){c.beginPath();c.arc(350+k*34,240+r*72,7,0,7);c.arc(482+k*34,240+r*72,7,0,7);c.fill()}
+  c.fillStyle="#b9b4ad";c.fillRect(0,700,S,200);c.fillStyle="#a39d95";for(let i=0;i<4;i++)c.fillRect(0,744+i*50,S,4);
+  const lion=(x,flip,ball)=>{c.save();c.translate(x,0);c.scale(flip,1);
+    c.fillStyle="#9b958d";rr(c,-110,600,220,160,10);c.fill();c.fillStyle="#c9c4bd";rr(c,-90,440,180,170,40);c.fill();
+    c.fillStyle="#aaa49c";for(let a=0;a<6.28;a+=.45){c.beginPath();c.arc(Math.cos(a)*92,340+Math.sin(a)*86,30,0,7);c.fill()}
+    c.fillStyle="#d4cfc8";c.beginPath();c.arc(0,340,82,0,7);c.fill();face(c,0,340,1.3,"#4a4440");
+    c.fillStyle="#c9c4bd";rr(c,40,520,60,80,20);c.fill();
+    if(ball){c.fillStyle="#b0aaa2";c.beginPath();c.arc(70,560,44,0,7);c.fill();c.strokeStyle="#8f8981";c.lineWidth=4;c.beginPath();c.arc(70,560,30,0,7);c.moveTo(26,560);c.lineTo(114,560);c.stroke()}
+    else{c.fillStyle="#d4cfc8";c.beginPath();c.arc(70,565,36,0,7);c.fill();face(c,70,565,.5,"#4a4440")}
+    c.restore()};
+  lion(160,1,true);lion(740,-1,false);
+}},
+{name:"Двор сыхэюань",fact:"Сыхэюань — традиционный пекинский дом, где четыре здания окружают квадратный двор. Ворота обычно ставили в юго‑восточном углу.",draw(c){
+  c.fillStyle="#d9ccb4";c.fillRect(0,0,S,S);c.strokeStyle="#7d8592";c.lineWidth=26;c.strokeRect(60,60,780,780);
+  const roof=(x,y,w,h,vert)=>{c.fillStyle="#7d8592";c.fillRect(x,y,w,h);c.fillStyle="#68707d";if(vert)for(let yy=y;yy<y+h;yy+=16)c.fillRect(x,yy,w,5);else for(let xx=x;xx<x+w;xx+=16)c.fillRect(xx,y,5,h);
+    c.fillStyle="#555c68";if(vert)c.fillRect(x+w/2-6,y,12,h);else c.fillRect(x,y+h/2-6,w,12)};
+  roof(160,100,580,160,false);roof(100,290,150,320,true);roof(650,290,150,320,true);roof(160,650,480,140,false);
+  c.fillStyle="#c8323a";c.fillRect(670,670,110,110);c.fillStyle="#f2b63b";c.fillRect(712,700,26,50);
+  c.fillStyle="#e9dfcb";c.fillRect(260,290,380,340);c.fillStyle="#cfc2aa";c.fillRect(420,290,60,340);c.fillRect(260,430,380,60);
+  c.fillStyle="#3f9e8a";c.beginPath();c.arc(340,370,70,0,7);c.arc(380,330,50,0,7);c.fill();c.fillStyle="#f28b2e";[[320,350],[360,390],[390,320],[300,400]].forEach(([x,y])=>{c.beginPath();c.arc(x,y,10,0,7);c.fill()});
+  [[560,580],[300,580],[580,330]].forEach(([x,y])=>{c.fillStyle="#7d5f68";c.beginPath();c.arc(x,y,26,0,7);c.fill();c.fillStyle="#f6a6c1";c.beginPath();c.arc(x,y,16,0,7);c.fill()});
+  c.fillStyle="#f29a3a";c.beginPath();c.ellipse(510,540,40,30,.3,0,7);c.fill();c.beginPath();c.arc(542,520,22,0,7);c.fill();c.beginPath();c.moveTo(528,506);c.lineTo(534,490);c.lineTo(546,503);c.moveTo(548,503);c.lineTo(560,490);c.lineTo(562,510);c.fill();
+}},
+{name:"Вид с холма Цзиншань",fact:"Холм Цзиншань насыпали из земли, вынутой при рытье рва вокруг Запретного города. С его вершины видно море золотых крыш дворца.",draw(c){
+  sky(c,"#ffd9c4","#fff4ea",380);c.fillStyle="#e6cbbf";[[0,300,120],[130,320,90],[600,290,110],[740,310,100]].forEach(([x,y,w])=>c.fillRect(x,y,w,90));
+  c.fillStyle="#e7d0b0";c.fillRect(0,380,S,520);
+  [[420,.55,150],[520,.7,190],[640,.85,230],[780,1,270]].forEach(([y,s,w],k)=>{for(let x=(k%2)*w/2;x<S+w;x+=w+30*s){c.fillStyle="#c8323a";c.fillRect(x-w/2+20*s,y-10*s,w-40*s,60*s);eaveRoof(c,x,y-50*s,w,40*s)}});
+  c.fillStyle="#6fa780";c.beginPath();c.moveTo(0,900);c.lineTo(0,560);c.quadraticCurveTo(160,520,320,900);c.fill();
+  c.fillStyle="#c8323a";[70,140,210].forEach(x=>c.fillRect(x,520,14,140));eaveRoof(c,147,450,250,70,"#3f8a8c","#2c6567");
+  c.fillStyle="#2f7d66";c.beginPath();c.moveTo(900,0);c.quadraticCurveTo(820,120,900,240);c.fill();[[840,60],[800,130],[860,170]].forEach(([x,y])=>{c.beginPath();c.ellipse(x,y,70,30,-.4,0,7);c.fill()});
+}},
+{name:"Золотые рыбки",fact:"Золотых рыбок вывели в Китае больше тысячи лет назад. Их держали в прудах и больших чанах во дворах пекинских домов.",draw(c){
+  c.fillStyle=grad(c,0,S,"#8cc9cb","#5d9fa8");c.fillRect(0,0,S,S);
+  c.strokeStyle="rgba(255,255,255,.35)";c.lineWidth=3;[[200,200],[650,650],[300,700]].forEach(([x,y])=>{for(let r=20;r<120;r+=30){c.beginPath();c.arc(x,y,r,0,7);c.stroke()}});
+  [[120,140,90],[760,180,110],[170,760,100],[720,790,80],[470,470,70]].forEach(([x,y,r],i)=>{c.fillStyle=i%2?"#5fa679":"#6fb585";c.beginPath();c.moveTo(x,y);c.arc(x,y,r,.3,6.0);c.closePath();c.fill();c.strokeStyle="rgba(0,0,0,.1)";c.lineWidth=2;for(let a=.6;a<6;a+=.6){c.beginPath();c.moveTo(x,y);c.lineTo(x+Math.cos(a)*r*.9,y+Math.sin(a)*r*.9);c.stroke()}});
+  c.fillStyle="#f6a6c1";for(let a=0;a<6.28;a+=.78){c.beginPath();c.ellipse(760+Math.cos(a)*30,180+Math.sin(a)*30,30,14,a,0,7);c.fill()}c.fillStyle="#ffd75a";c.beginPath();c.arc(760,180,16,0,7);c.fill();
+  const fish=(x,y,a,col,col2)=>{c.save();c.translate(x,y);c.rotate(a);c.fillStyle=col;c.beginPath();c.moveTo(-50,0);c.quadraticCurveTo(-110,-50,-120,-10);c.quadraticCurveTo(-100,0,-120,10);c.quadraticCurveTo(-110,50,-50,0);c.fill();
+    c.beginPath();c.ellipse(0,0,64,34,0,0,7);c.fill();if(col2){c.fillStyle=col2;c.beginPath();c.ellipse(10,-8,26,16,0,0,7);c.fill()}
+    c.fillStyle=col;c.beginPath();c.ellipse(-6,-30,26,10,-.4,0,7);c.ellipse(-6,30,26,10,.4,0,7);c.fill();
+    c.fillStyle="#3a2330";c.beginPath();c.arc(40,-14,6,0,7);c.arc(40,14,6,0,7);c.fill();c.restore()};
+  fish(330,300,.4,"#f28b2e");fish(590,360,2.6,"#f6e8dc","#f28b2e");fish(420,640,-.6,"#e8533a");fish(660,560,3.6,"#f28b2e","#fff");fish(230,510,1.2,"#ffb04a");
+}},
+{name:"Снег в Запретном городе",fact:"Снег в Пекине выпадает нечасто, поэтому в снежные дни фотографы спешат в Запретный город снимать белые шапки на золотых крышах.",draw(c){
+  sky(c,"#d6dbe8","#f6eef0",640);
+  c.fillStyle="#c8323a";c.fillRect(0,560,S,200);c.fillStyle="#a8262e";for(let x=0;x<S;x+=46)c.fillRect(x,560,3,200);
+  const t=hall(c,450,520,440,130);c.fillStyle="#fffdfd";c.beginPath();c.ellipse(450,t+6,280,22,0,0,7);c.fill();
+  [[300,t+26],[450,t+30],[600,t+26]].forEach(([x,y])=>{c.beginPath();c.ellipse(x,y,34,10,0,0,7);c.fill()});
+  eaveRoof(c,450,526,900,40);c.fillStyle="#fffdfd";rr(c,-20,512,940,22,11);c.fill();
+  ground(c,760,"#fbf8fa");c.fillStyle="#e8e2ea";for(let i=0;i<4;i++)c.fillRect(0,790+i*30,S,3);
+  c.strokeStyle="#5a3a2a";c.lineWidth=9;c.lineCap="round";c.beginPath();c.moveTo(0,860);c.quadraticCurveTo(180,800,260,640);c.moveTo(130,820);c.lineTo(220,860);c.moveTo(200,740);c.lineTo(140,680);c.stroke();
+  [[260,640],[230,700],[140,680],[220,860],[180,780],[90,830]].forEach(([x,y])=>{c.fillStyle="#f28aa6";for(let a=0;a<6.28;a+=1.26){c.beginPath();c.arc(x+Math.cos(a)*12,y+Math.sin(a)*12,10,0,7);c.fill()}c.fillStyle="#ffd75a";c.beginPath();c.arc(x,y,5,0,7);c.fill()});
+  snow(c,90,31);
+}}
+];
+
+/* ---------- utils ---------- */
+const $=id=>document.getElementById(id);
+const COIN='<svg class="coin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#eab04a"/><circle cx="12" cy="12" r="8.4" fill="none" stroke="#c98a1f" stroke-width="1.4"/><rect x="9" y="9" width="6" height="6" rx=".8" fill="#fff8f4" stroke="#c98a1f" stroke-width="1.2"/></svg>';
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const dayNum=s=>Math.round(new Date(s+"T12:00:00").getTime()/864e5);
+const plural=(n,a,b,c)=>{const m10=n%10,m100=n%100;return m10===1&&m100!==11?a:(m10>=2&&m10<=4&&(m100<10||m100>=20))?b:c};
+let toastT=0;
+function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2400)}
+function icon(k){
+  const coinAt=(x,y)=>'<g transform="translate('+x+','+y+')"><ellipse cx="0" cy="6" rx="18" ry="6" fill="#c98a1f"/><ellipse cx="0" cy="0" rx="18" ry="6" fill="#eab04a"/><rect x="-3.5" y="-2" width="7" height="4" fill="#fff8f4"/></g>';
+  if(k==="c1")return '<svg viewBox="0 0 80 60">'+coinAt(40,40)+coinAt(40,32)+'</svg>';
+  if(k==="c2")return '<svg viewBox="0 0 80 60">'+coinAt(28,44)+coinAt(28,36)+coinAt(52,44)+coinAt(52,36)+coinAt(52,28)+coinAt(40,20)+'</svg>';
+  if(k==="c3")return '<svg viewBox="0 0 80 60"><rect x="10" y="26" width="60" height="30" rx="5" fill="#9e2229"/><path d="M10 28 Q40 0 70 28Z" fill="#c8323a"/><rect x="34" y="30" width="12" height="12" rx="2" fill="#eab04a"/>'+coinAt(22,22)+coinAt(58,22)+coinAt(40,14)+'</svg>';
+  if(k==="pack")return '<svg viewBox="0 0 80 60"><rect x="14" y="22" width="52" height="34" rx="4" fill="#c8323a"/><rect x="10" y="14" width="60" height="12" rx="3" fill="#e23a3a"/><rect x="35" y="14" width="10" height="42" fill="#eab04a"/><path d="M40 14 C28 0 18 8 30 14 M40 14 C52 0 62 8 50 14" stroke="#eab04a" stroke-width="5" fill="none"/></svg>';
+  if(k==="noads")return '<svg viewBox="0 0 80 60"><rect x="12" y="10" width="56" height="40" rx="8" fill="#3a2330"/><text x="40" y="38" font-size="20" font-weight="900" font-family="system-ui,sans-serif" fill="#fff8f4" text-anchor="middle">AD</text><line x1="14" y1="54" x2="66" y2="6" stroke="#c8323a" stroke-width="7" stroke-linecap="round"/></svg>';
+  if(k==="crown")return '<svg viewBox="0 0 80 60"><path d="M12 48 L16 16 L30 32 L40 8 L50 32 L64 16 L68 48Z" fill="#eab04a"/><rect x="12" y="46" width="56" height="8" rx="3" fill="#c98a1f"/><circle cx="40" cy="36" r="5" fill="#c8323a"/><circle cx="26" cy="40" r="3.5" fill="#3f9e8a"/><circle cx="54" cy="40" r="3.5" fill="#3f9e8a"/></svg>';
+  if(k==="free")return '<svg viewBox="0 0 80 60">'+coinAt(30,36)+coinAt(30,28)+'<circle cx="56" cy="26" r="16" fill="#3f9e8a"/><path d="M51 18 L64 26 L51 34Z" fill="#fff"/></svg>';
+  if(k==="wheel")return '<svg viewBox="0 0 80 60"><circle cx="40" cy="30" r="26" fill="#eab04a"/><path d="M40 30 L40 4 A26 26 0 0 1 66 30Z" fill="#c8323a"/><path d="M40 30 L40 56 A26 26 0 0 1 14 30Z" fill="#c8323a"/><path d="M40 30 L66 30 A26 26 0 0 1 40 56Z" fill="#3f9e8a"/><circle cx="40" cy="30" r="7" fill="#fff8f4" stroke="#9e2229" stroke-width="2"/><path d="M34 0 L46 0 L40 10Z" fill="#3a2330"/></svg>';
+  if(k==="edge")return '<svg viewBox="0 0 80 60"><rect x="16" y="6" width="48" height="48" rx="6" fill="#efcfc6"/><path d="M16 12 a6 6 0 0 1 6-6 h36 a6 6 0 0 1 6 6 v36 a6 6 0 0 1 -6 6 h-36 a6 6 0 0 1 -6-6Z M28 18 v24 h24 v-24Z" fill="#3f9e8a" fill-rule="evenodd"/><rect x="28" y="18" width="24" height="24" fill="#fff8f4" stroke="#c98a1f" stroke-dasharray="4 3" stroke-width="2"/></svg>';
+  if(k==="x2")return '<svg viewBox="0 0 80 60"><ellipse cx="30" cy="40" rx="18" ry="6" fill="#c98a1f"/><ellipse cx="30" cy="34" rx="18" ry="6" fill="#eab04a"/><circle cx="56" cy="24" r="17" fill="#c8323a"/><text x="56" y="31" font-size="19" font-weight="900" font-family="system-ui,sans-serif" fill="#fff" text-anchor="middle">×2</text></svg>';
+  return '<svg viewBox="0 0 80 60"><circle cx="40" cy="30" r="24" fill="#3f9e8a"/><text x="40" y="40" font-size="30" font-weight="900" font-family="system-ui,sans-serif" fill="#fff" text-anchor="middle">?</text></svg>';
+}
+
+/* ---------- content ---------- */
+const DIFFS=[["Очень легко",3],["Легко",4],["Средне",5],["Сложно",6],["Очень сложно",7],["Безумно сложно",8]];
+const CH=[[3,6,"Разминка"],[4,10,"Прогулка по хутунам"],[5,14,"Императорский двор"],[6,18,"Великая стена"],[7,20,"Праздничные огни"],[8,18,"Мастер пазлов"],[9,10,"Сын Неба"],[10,4,"Легенда Пекина"]];
+const LV=[];
+CH.forEach(([n,cnt],ci)=>{for(let i=0;i<cnt;i++){const k=LV.length+1,boss=k%10===0;LV.push({k,n:boss?Math.min(10,n+1):n,boss,ch:ci,pic:(k-1)%PICS.length})}});
+const FRAMES=[
+  {id:"lacquer",name:"Красный лак",price:0,col:"#c8323a",edge:"#9e2229",knob:"#eab04a"},
+  {id:"jade",name:"Нефрит",price:300,col:"#3f9e8a",edge:"#2c7566",knob:"#f2e6c8"},
+  {id:"ink",name:"Тушь",price:450,col:"#2b2430",edge:"#120e15",knob:"#c8323a"},
+  {id:"peach",name:"Персиковый цвет",price:450,col:"#ef8fa7",edge:"#c9637e",knob:"#fff3c4"},
+  {id:"sky",name:"Небесная глазурь",price:600,col:"#2f6fb3",edge:"#1f4f86",knob:"#eab04a"},
+  {id:"bamboo",name:"Бамбук",price:900,col:"#7cb56a",edge:"#4f8a43",knob:"#f2e6c8"},
+  {id:"plum",name:"Цветок сливы",price:800,col:"#9c3d6e",edge:"#6e2449",knob:"#f6c1d6"},
+  {id:"porcelain",name:"Фарфор",price:1000,col:"#eef2f7",edge:"#2f6fb3",knob:"#2f6fb3"},
+  {id:"gold",name:"Императорское золото",price:1200,col:"#e0a83a",edge:"#a87618",knob:"#c8323a"},
+  {id:"night",name:"Ночной Пекин",price:1500,col:"#1f2a52",edge:"#121a36",knob:"#ffd36e"},
+  {id:"dragon",name:"Нефритовый дракон",price:3000,col:"#2c7566",edge:"#eab04a",knob:"#c8323a"},
+  {id:"lantern",name:"Праздничный фонарь",price:0,ads:10,col:"#e23a3a",edge:"#f2b63b",knob:"#ffd75a"}];
+const EDGE_PACKS=[[1,100],[3,250,"−17%"],[8,600,"−25%"]];
+const CHEST={need:3,coins:200,hints:2},WHEEL_ADS=3,X2_MIN=30;
+const WHEEL=[{t:"20",c:20,w:25,col:"#fff8f4"},{t:"1 подсказка",h:1,w:12,col:"#3f9e8a"},{t:"50",c:50,w:18,col:"#eab04a"},{t:"Края",e:1,w:7,col:"#2f6fb3"},
+  {t:"30",c:30,w:20,col:"#fff8f4"},{t:"3 подсказки",h:3,w:5,col:"#3f9e8a"},{t:"100",c:100,w:10,col:"#eab04a"},{t:"250",c:250,w:3,col:"#c8323a"}];
+const HINT_PACKS=[[3,60],[10,180,"−10%"],[30,450,"−25%"]];
+const DAILY=[20,30,40,60,80,100,250];
+const FREE_COINS=30,FREE_PER_DAY=8,INTER_GAP=125000;
+const PRODUCTS=[
+  {id:"starter_pack",name:"Стартовый набор",desc:"1000 монет, 10 подсказок, 3 бустера «Края» и рамка «Нефрит». Покупается один раз.",tag:"Выгодно",once:true,ic:"pack"},
+  {id:"coins_500",name:"Горсть монет",desc:"500 монет на подсказки, бустеры и рамки.",ic:"c1"},
+  {id:"coins_1500",name:"Мешочек монет",desc:"1500 монет.",tag:"Популярно",ic:"c2"},
+  {id:"coins_5000",name:"Сундук монет",desc:"5000 монет.",tag:"Лучшая цена",ic:"c3"},
+  {id:"no_ads",name:"Без рекламы",desc:"Убирает рекламу между уровнями. Видео за награду остаются по желанию.",once:true,ic:"noads"},
+  {id:"premium",name:"Императорский пропуск",desc:"Без рекламы, 3000 монет, 20 подсказок, 10 бустеров «Края» и все рамки.",tag:"Всё сразу",once:true,ic:"crown"}];
+const CONSUMABLE=new Set(["coins_500","coins_1500","coins_5000"]);
+
+/* ---------- pictures cache ---------- */
+const cache=new Map(),thumbs=new Map(),turls=new Map();
+const DPR=()=>Math.min(3,window.devicePixelRatio||1);
+/* full-size picture for the board, drawn at the board's real pixel size (crisp on tablets), max 3 kept */
+function src(i){const sz=Math.max(600,Math.min(2048,Math.ceil(B*DPR()/60)*60)),key=i+":"+sz;
+  if(cache.has(key))return cache.get(key);
+  const cv=document.createElement("canvas");cv.width=cv.height=sz;const c=cv.getContext("2d");c.scale(sz/S,sz/S);PICS[i].draw(c);
+  cache.set(key,cv);if(cache.size>3)cache.delete(cache.keys().next().value);return cv}
+function thumb(i){if(!thumbs.has(i)){const cv=document.createElement("canvas");cv.width=cv.height=600;const c=cv.getContext("2d");c.scale(600/S,600/S);PICS[i].draw(c);thumbs.set(i,cv)}return thumbs.get(i)}
+/* menu thumbnails: one JPEG per picture and size, reused on every menu render */
+function thumbImg(i,px){const w=Math.min(600,Math.round(px*Math.min(2,DPR()))),key=i+":"+w;let u=turls.get(key);
+  if(!u){const cv=document.createElement("canvas");cv.width=cv.height=w;const c=cv.getContext("2d");c.imageSmoothingQuality="high";c.drawImage(thumb(i),0,0,w,w);u=cv.toDataURL("image/jpeg",.86);turls.set(key,u)}
+  const im=new Image();im.decoding="async";im.alt="";im.draggable=false;im.src=u;return im}
+
+/* ---------- save ---------- */
+const KEY="beijing-puzzles-v2";
+const DEF={v:2,ts:0,coins:150,hints:3,lv:{},done:{},diff:1,frames:["lacquer"],frame:"lacquer",boost:{edge:1},adViews:0,chest:{d:"",n:0},wheel:{d:"",n:0},x2until:0,noAds:false,premium:false,granted:{},daily:{last:"",streak:0},free:{d:"",n:0},wins:0,asked:{review:false,shortcut:false},tab:"levels"};
+const fresh=()=>JSON.parse(JSON.stringify(DEF));
+let save=fresh();
+function loadLocal(){
+  try{const s=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(s&&s.v===2){save=Object.assign(fresh(),s)}
+    else{const old=JSON.parse(localStorage.getItem("beijing-puzzles-v1")||"null");if(old&&old.done){save.done=old.done;save.diff=old.diff||1}}
+  }catch(e){}
+}
+function persist(now){save.ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify(save))}catch(e){}P.cloudSave(now)}
+function addCoins(n){save.coins+=n;persist();refreshWallet()}
+function spend(n){if(save.coins<n){toast("Не хватает монет");openShop("coins");return false}save.coins-=n;persist();refreshWallet();return true}
+function own(id){if(!save.frames.includes(id))save.frames.push(id)}
+const totalStars=()=>Object.values(save.lv).reduce((a,b)=>a+b,0);
+function grant(id){
+  if(id==="coins_500")save.coins+=500;
+  else if(id==="coins_1500")save.coins+=1500;
+  else if(id==="coins_5000")save.coins+=5000;
+  else if(id==="starter_pack"&&!save.granted[id]){save.coins+=1000;save.hints+=10;save.boost.edge+=3;own("jade")}
+  else if(id==="no_ads")save.noAds=true;
+  else if(id==="premium"&&!save.granted[id]){save.premium=true;save.noAds=true;save.coins+=3000;save.hints+=20;save.boost.edge+=10;FRAMES.forEach(f=>own(f.id))}
+  if(!CONSUMABLE.has(id))save.granted[id]=true;
+  persist(true);refreshWallet();toast("Покупка зачислена. Спасибо!");
+}
+function refreshWallet(){const h=COIN+"<span>"+save.coins+"</span>";$("coins-pill").innerHTML=h;$("shop-coins").innerHTML=h;$("hint-cnt").textContent=save.hints;$("edge-cnt").textContent=save.boost.edge;
+  const wd=$("wheel-dot");if(wd)wd.hidden=wheelUsed()>0}
+
+/* ---------- platform: Pikabu Games SDK; anywhere else ads and purchases are simulated ---------- */
+/* simulated ads/purchases only for local testing (file://, localhost or ?test=1); on a real host without the SDK
+   (e.g. a player's ad blocker cut it) ads are skipped and purchases are unavailable — never free fake purchases */
+const DEV=location.protocol==="file:"||/^(localhost|127\.|192\.168\.)/.test(location.hostname)||/[?&]test=1/.test(location.search);
+const P={sdk:null,mock:true,booted:false,cat:{},lastAd:0,started:false,
+  async boot(){
+    await new Promise(res=>{let done=false;const fin=()=>{if(!done){done=true;res()}};
+      try{const sc=document.createElement("script");sc.src="https://games.pikabu.ru/sdk/sdk.js";sc.async=true;sc.onload=fin;sc.onerror=fin;document.head.appendChild(sc)}catch(e){fin()}
+      setTimeout(fin,5000)});
+    if(window.PkbSDK){try{this.sdk=await PkbSDK.init()}catch(e){this.sdk=null}}
+    this.mock=!this.sdk&&DEV;
+    const sdk=this.sdk;
+    if(sdk){
+      /* cloud save: the newer of cloud / device wins */
+      try{const d=sdk.storage.get("save");if(d&&d.v===2&&(d.ts||0)>(save.ts||0)){save=Object.assign(fresh(),d);try{localStorage.setItem(KEY,JSON.stringify(save))}catch(e){}}
+        else if(save.ts)sdk.storage.set("save",save)}catch(e){}
+      try{sdk.on("storageSaveError",r=>{if(r==="REVISION_CONFLICT")toast("Игра открыта в другой вкладке или на другом устройстве. Перезагрузи страницу, чтобы сохранить прогресс")})}catch(e){}
+      try{sdk.on("userAuthorized",()=>{if(!G)renderHome();toast("Готово: прогресс сохраняется в аккаунте")})}catch(e){}
+      try{const ps=await sdk.store.getProducts();(ps||[]).forEach(p=>{this.cat[p.id]=p})}catch(e){}
+      await this.restore();
+    }
+    this.booted=true;
+  },
+  /* mobile-only preloader ad: allowed only before gameStarted(), i.e. on the loading screen */
+  async preloader(){const a=this.sdk&&this.sdk.ads&&this.sdk.ads.preloader;
+    try{if(a&&a.isSupported&&await a.canShow())await a.show()}catch(e){}},
+  ready(){if(this.started)return;this.started=true;try{this.sdk&&this.sdk.gameStarted()}catch(e){}},
+  start(){},stop(){},leaderboard(){},banner(){},
+  cloudSave(now){const sdk=this.sdk;if(!sdk)return;try{sdk.storage.set("save",save);if(now)sdk.storage.flush().catch(()=>{})}catch(e){}},
+  interstitial(done){
+    if(save.noAds||save.premium||Date.now()-this.lastAd<INTER_GAP){done();return}
+    const a=this.sdk&&this.sdk.ads&&this.sdk.ads.fullscreen;
+    if(!this.sdk){if(this.mock)mockAd(false).then(()=>{this.lastAd=Date.now();done()});else done();return}
+    (async()=>{try{if(a&&a.isSupported&&await a.canShow()){const r=await a.show();if(r&&r.rendered)this.lastAd=Date.now()}}catch(e){}done()})();
+  },
+  rewarded(){
+    pauseGame(true);
+    if(navigator.onLine===false){toast("Нет интернета: видео за награду сейчас недоступно");return Promise.resolve(false)}
+    const a=this.sdk&&this.sdk.ads&&this.sdk.ads.rewarded;
+    const p=!this.sdk?(this.mock?mockAd(true).then(()=>1):Promise.resolve(-1)):(async()=>{try{if(!a||!a.isSupported||!(await a.canShow()))return -1;const r=await a.show();return r&&r.reward?1:0}catch(e){return -1}})();
+    return p.then(code=>{if(code>=0)this.lastAd=Math.max(this.lastAd,Date.now()-INTER_GAP+30000);
+      if(code===1){save.adViews=(save.adViews||0)+1;persist();return true}
+      toast(code<0?"Видео сейчас недоступно, попробуй чуть позже":"Видео не досмотрено, награды нет");return false});
+  },
+  price(id){const p=this.cat[id];if(!p)return null;return{txt:p.formattedPrice||((p.price/100)+" ₽")}},
+  async buy(id){
+    if(!this.sdk){if(!this.mock){toast("Покупки сейчас недоступны. Если включён блокировщик рекламы, отключи его для игры");return false}const ok=await mockPay(id);if(ok)grant(id);return ok}
+    pauseGame(true);
+    try{const r=await this.sdk.store.purchase({productId:id});
+      if(r&&r.success){grant(id);if(CONSUMABLE.has(id)){try{await this.sdk.store.consumePurchase(r.purchase.purchaseId)}catch(e){}}return true}
+      const why=r&&r.reason;
+      if(why==="NON_CONSUMABLE_ALREADY_OWNED"){grant(id);return true}
+      if(why&&why!=="USER_CANCELLED")toast(why==="USER_UNAUTHORIZED"?"Чтобы покупать, войди в аккаунт Пикабу":"Покупка не прошла, попробуй ещё раз");
+      return false}catch(e){toast("Покупка не прошла, попробуй ещё раз");return false}
+  },
+  /* purchases that were paid but not credited (closed tab, lost connection) are credited on the next start */
+  async restore(){
+    try{const list=await this.sdk.store.getPurchases();
+      for(const p of list||[]){const id=p.productId||p.productID||p.id;
+        if(CONSUMABLE.has(id)){grant(id);try{await this.sdk.store.consumePurchase(p.purchaseId)}catch(e){}}
+        else if(id&&!save.granted[id])grant(id)}
+    }catch(e){}
+  },
+  authed(){try{return !this.sdk||!!this.sdk.player.isAuthorized}catch(e){return true}},
+  async auth(){try{await this.sdk.auth.openAuthDialog()}catch(e){}if(!G)renderHome()},
+  review(next){next()}
+};
+
+/* ---------- test-mode stand-ins ---------- */
+function mockAd(rewarded){
+  return new Promise(res=>{const o=$("mockad");let s=3;
+    o.innerHTML='<div><span class="ad">ТЕСТОВАЯ РЕКЛАМА</span><h2 style="margin:12px 0 6px;font-size:26px">'+(rewarded?"Видео за награду":"Реклама между уровнями")+'</h2><p style="opacity:.75;max-width:34ch;margin:0 auto">На Пикабу Играх здесь покажется настоящая реклама.</p><p style="font-size:44px;font-weight:900;margin:16px 0 0" id="mockcd">3</p></div>';
+    o.hidden=false;
+    const it=setInterval(()=>{s--;const cd=$("mockcd");if(cd)cd.textContent=s;if(s<=0){clearInterval(it);o.hidden=true;res()}},1000);
+  });
+}
+function mockPay(id){
+  return new Promise(res=>{const p=PRODUCTS.find(x=>x.id===id);$("mockpay-name").textContent=p.name;$("mockpay-desc").textContent=p.desc;$("mockpay").hidden=false;
+    $("mockpay-ok").onclick=()=>{$("mockpay").hidden=true;res(true)};
+    $("mockpay-no").onclick=()=>{$("mockpay").hidden=true;res(false)};
+  });
+}
+const modalOpen=()=>["winbox","shop","offer","daily","wheel","mockpay","mockad"].some(id=>!$(id).hidden);
+
+/* ---------- progression: levels open one by one, pictures open when first met in the campaign ---------- */
+const LOCK_SVG='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="#fff8f4"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5" fill="none" stroke="#fff8f4" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="15.3" r="1.6" fill="#3a2330"/></svg>';
+/* a level is open only when every level before it is beaten */
+const lvOpen=k=>{for(let j=1;j<k;j++)if(!save.lv[j])return false;return true};
+const picLevel=i=>LV.find(l=>l.pic===i);
+const picOpen=i=>LV.some(l=>l.pic===i&&save.lv[l.k]&&lvOpen(l.k));
+function lockEl(){const d=document.createElement("span");d.className="lock";d.innerHTML=LOCK_SVG;return d}
+
+/* ---------- home ---------- */
+function nextLevel(){return LV.find(l=>!save.lv[l.k])||LV[LV.length-1]}
+function renderHome(){
+  refreshWallet();
+  const lvTab=save.tab!=="coll";
+  $("tab-levels").hidden=!lvTab;$("tab-coll").hidden=lvTab;
+  $("t-levels").setAttribute("aria-selected",lvTab);$("t-coll").setAttribute("aria-selected",!lvTab);
+  $("lv-total").textContent=lvTab?"★ "+totalStars()+" из "+LV.length*3:"";
+  renderFoot();
+  if(lvTab){
+    const nx=nextLevel(),cta=$("cta");cta.innerHTML="";
+    const tx=document.createElement("div");tx.innerHTML="<b>Играть: уровень "+nx.k+"</b><span>"+PICS[nx.pic].name+" · "+nx.n+"×"+nx.n+(nx.boss?" · босс":"")+"</span>";
+    const go=document.createElement("span");go.className="go";go.textContent="→";
+    cta.append(thumbImg(nx.pic,88),tx,go);cta.onclick=()=>startGame({mode:"level",k:nx.k});
+    const box=$("chapters");box.innerHTML="";
+    CH.forEach(([n,cnt,name],ci)=>{
+      const ls=LV.filter(l=>l.ch===ci),got=ls.reduce((a,l)=>a+(save.lv[l.k]||0),0);
+      const sec=document.createElement("div");sec.className="chapter";
+      sec.innerHTML="<h3>Глава "+(ci+1)+". "+name+" <small>"+n+"×"+n+" · ★ "+got+" из "+cnt*3+"</small></h3>";
+      const g=document.createElement("div");g.className="lv";
+      ls.forEach(l=>{const s=save.lv[l.k]||0,open=lvOpen(l.k);const b=document.createElement("button");
+        b.className="lvl"+(s?" done":"")+(l.boss?" boss":"")+(l===nx?" next":"")+(open?"":" locked");b.id="lv-"+l.k;
+        b.setAttribute("aria-label","Уровень "+l.k+", "+l.n+" на "+l.n+(s?", звёзд: "+s:"")+(open?"":", закрыт"));
+        const nm=document.createElement("span");nm.className="num";nm.textContent=l.k;
+        const st=document.createElement("span");st.className="st";st.textContent="★".repeat(s)+"☆".repeat(3-s);
+        if(open){b.append(thumbImg(l.pic,112),nm,st);b.onclick=()=>startGame({mode:"level",k:l.k})}
+        else{b.append(thumbImg(l.pic,112),nm,lockEl());b.onclick=()=>toast("Сначала пройди уровень "+nextLevel().k)}
+        g.appendChild(b)});
+      sec.appendChild(g);box.appendChild(sec);
+    });
+  }else{
+    const d=$("diffs");d.innerHTML="";
+    DIFFS.forEach(([nm,n],i)=>{const b=document.createElement("button");b.className="chip";b.id="diff-"+i;b.setAttribute("aria-pressed",save.diff===i);
+      b.innerHTML=nm+"<small>"+n+"×"+n+"</small>";b.onclick=()=>{save.diff=i;persist();renderHome()};d.appendChild(b)});
+    const g=$("grid");g.innerHTML="";
+    PICS.forEach((p,i)=>{const done=save.done[i]||[];const b=document.createElement("button");b.className="card";b.id="pic-"+i;
+      const nm=document.createElement("div");nm.className="nm";nm.textContent=p.name;
+      const dots=document.createElement("div");dots.className="dots";dots.title="Пройденные уровни сложности";
+      DIFFS.forEach((_,k)=>{const e=document.createElement("i");if(done.includes(k))e.className="on";dots.appendChild(e)});
+      if(picOpen(i)){b.append(thumbImg(i,300),nm,dots);b.onclick=()=>startGame({mode:"free",pi:i})}
+      else{const k=picLevel(i).k;b.classList.add("locked");nm.textContent="Закрытая картинка";
+        const h=document.createElement("div");h.className="hint-open";h.textContent="Откроется на уровне "+k;
+        b.append(thumbImg(i,300),lockEl(),nm,h);b.setAttribute("aria-label","Закрытая картинка, откроется на уровне "+k);b.onclick=()=>toast("Пройди уровень "+k+", чтобы открыть эту картинку")}
+      g.appendChild(b)});
+  }
+}
+function renderFoot(){$("auth").hidden=!(P.sdk&&!P.authed());$("testchip").hidden=!(P.booted&&P.mock)}
+$("auth").onclick=()=>P.auth();
+$("t-levels").onclick=()=>{save.tab="levels";persist();renderHome()};
+$("t-coll").onclick=()=>{save.tab="coll";persist();renderHome()};
+$("shop-open").onclick=()=>openShop("coins");
+
+/* ---------- shop ---------- */
+let shopTab="coins";
+function openShop(tab){if(tab)shopTab=tab;if(G&&!G.solved){pauseGame(true);P.stop()}renderShop();$("shop").hidden=false}
+function closeShop(){$("shop").hidden=true;if(!G)renderHome();else if(!modalOpen())resumeGame()}
+$("shop-close").onclick=closeShop;
+function priceHTML(id){const pr=P.price(id);if(pr)return pr.txt;return P.mock?"Купить (тест)":P.sdk?"Купить":"Недоступно"}
+function item(o){
+  const d=document.createElement("div");d.className="item"+(o.hot?" hot":"");
+  d.innerHTML=(o.tag?'<span class="tag">'+o.tag+"</span>":"")+'<div class="ic">'+o.ic+"</div><b>"+o.name+"</b><p>"+o.desc+"</p>";
+  const b=document.createElement("button");b.className="buy"+(o.cls?" "+o.cls:"");b.id="buy-"+o.id;b.innerHTML=o.btn;b.disabled=!!o.dis;
+  b.onclick=async()=>{b.disabled=true;try{await o.on()}finally{if(!$("shop").hidden)renderShop()}};
+  d.appendChild(b);return d;
+}
+function renderShop(){
+  refreshWallet();
+  const tb=$("shop-tabs");tb.innerHTML="";
+  [["coins","Монеты"],["hints","Подсказки"],["boost","Бустеры"],["frames","Рамки"]].forEach(([id,nm])=>{const b=document.createElement("button");b.className="tab";b.id="st-"+id;b.textContent=nm;b.setAttribute("aria-selected",shopTab===id);b.onclick=()=>{shopTab=id;renderShop()};tb.appendChild(b)});
+  const box=$("shop-items");box.innerHTML="";
+  if(shopTab==="coins"){
+    const used=save.free.d===today()?save.free.n:0;
+    box.appendChild(item({id:"free",ic:icon("free"),name:"Бесплатные монеты",desc:"Посмотри рекламу и получи "+FREE_COINS+" монет. Сегодня осталось "+(FREE_PER_DAY-used)+" из "+FREE_PER_DAY+".",btn:'<span class="ad">РЕКЛАМА</span> +'+FREE_COINS+" "+COIN,dis:used>=FREE_PER_DAY,
+      on:async()=>{if(await P.rewarded()){const t=today();if(save.free.d!==t)save.free={d:t,n:0};save.free.n++;addCoins(FREE_COINS);toast("+"+FREE_COINS+" монет")}}}));
+    const ch=chestN(),done=ch>=CHEST.need;
+    box.appendChild(item({id:"chest",ic:icon("c3"),name:"Сундук за 3 видео",tag:"Выгодно",hot:true,
+      desc:(done?"Сундук на сегодня открыт. Новый будет завтра.":"Посмотри 3 видео и открой сундук: "+CHEST.coins+" монет и "+CHEST.hints+" подсказки.")+'<span class="prog3">'+[0,1,2].map(i=>'<i class="'+(i<ch?"on":"")+'"></i>').join("")+"</span>",
+      btn:done?"Открыт":'<span class="ad">РЕКЛАМА</span> Видео '+(ch+1)+" из "+CHEST.need,dis:done,
+      on:async()=>{if(!(await P.rewarded()))return;const t=today();if(save.chest.d!==t)save.chest={d:t,n:0};save.chest.n++;
+        if(save.chest.n>=CHEST.need){save.coins+=CHEST.coins;save.hints+=CHEST.hints;persist(true);refreshWallet();confetti();toast("Сундук открыт: +"+CHEST.coins+" монет и +"+CHEST.hints+" подсказки")}
+        else{persist();toast("Осталось видео: "+(CHEST.need-save.chest.n))}}}));
+    const wu=wheelUsed();
+    box.appendChild(item({id:"wheel",ic:icon("wheel"),name:"Колесо удачи",desc:"Одно вращение в день бесплатно, ещё "+WHEEL_ADS+" — за рекламу. Призы до 250 монет, подсказки и бустеры.",
+      btn:wu===0?"Крутить бесплатно":wu<=WHEEL_ADS?"Открыть колесо":"Приходи завтра",cls:wu===0?"":"coins",dis:wu>WHEEL_ADS,on:()=>{openWheel()}}));
+    PRODUCTS.forEach(p=>{if(p.once&&save.granted[p.id])return;if(p.id==="no_ads"&&save.premium)return;
+      box.appendChild(item({id:p.id,ic:icon(p.ic),name:p.name,desc:p.desc,tag:p.tag,hot:p.id==="starter_pack",btn:priceHTML(p.id),on:()=>P.buy(p.id)}))});
+    const tip=document.createElement("div");tip.className="item";
+    tip.innerHTML='<div class="ic">'+icon("c2")+'</div><b>Монеты за игру</b><p>Каждый собранный пазл приносит монеты, а за три звезды — больше. Боссы дают двойную награду, а после победы её можно удвоить за рекламу.</p>';
+    box.appendChild(tip);
+  }else if(shopTab==="hints"){
+    box.appendChild(item({id:"hint-ad",ic:icon("hint"),name:"Подсказка за рекламу",desc:"Посмотри рекламу и получи 1 подсказку.",btn:'<span class="ad">РЕКЛАМА</span> +1',
+      on:async()=>{if(await P.rewarded()){save.hints++;persist();refreshWallet();toast("+1 подсказка")}}}));
+    HINT_PACKS.forEach(([n,price,tag])=>box.appendChild(item({id:"hints-"+n,ic:icon("hint"),name:n+" "+plural(n,"подсказка","подсказки","подсказок"),desc:"Подсказка ставит кусочек на место и не тратит ходы.",tag,cls:"coins",btn:price+" "+COIN,
+      on:()=>{if(spend(price)){save.hints+=n;persist();refreshWallet();toast("+"+n+" "+plural(n,"подсказка","подсказки","подсказок"))}}})));
+  }else if(shopTab==="boost"){
+    box.appendChild(item({id:"edge-ad",ic:icon("edge"),name:"Края за рекламу",desc:"Бустер «Края» ставит на место все кусочки по краю картинки. Работает на полях от 4×4 и не тратит ходы.",btn:'<span class="ad">РЕКЛАМА</span> +1',
+      on:async()=>{if(await P.rewarded()){save.boost.edge++;persist();refreshWallet();toast("+1 бустер «Края»")}}}));
+    EDGE_PACKS.forEach(([n,price,tag])=>box.appendChild(item({id:"edges-"+n,ic:icon("edge"),name:"Края × "+n,desc:"Собирает всю рамку картинки за одно нажатие.",tag,cls:"coins",btn:price+" "+COIN,
+      on:()=>{if(spend(price)){save.boost.edge+=n;persist();refreshWallet();toast("+"+n+" «Края»")}}})));
+    const left=Math.max(0,save.x2until-Date.now()),act=left>0;
+    box.appendChild(item({id:"x2",ic:icon("x2"),name:"Двойные монеты",tag:act?"Активно":"",
+      desc:act?"Награда за каждый пазл удвоена ещё "+Math.ceil(left/60000)+" мин.":"Посмотри рекламу — и "+X2_MIN+" минут все награды за пазлы будут ×2.",
+      btn:act?"Активно":'<span class="ad">РЕКЛАМА</span> ×2 на '+X2_MIN+" мин",dis:act,
+      on:async()=>{if(await P.rewarded()){save.x2until=Date.now()+X2_MIN*60000;persist();toast("Двойные монеты на "+X2_MIN+" минут")}}}));
+  }else{
+    FRAMES.forEach(f=>{const owned=save.frames.includes(f.id),eq=save.frame===f.id;
+      if(f.ads&&!owned){const v=Math.min(f.ads,save.adViews||0),ready=v>=f.ads;
+        box.appendChild(item({id:"frame-"+f.id,tag:"За рекламу",ic:'<span class="swatch" style="background:'+f.col+';box-shadow:inset 0 0 0 5px '+f.edge+'"></span>',name:f.name,
+          desc:"Особая рамка: открывается за "+f.ads+" просмотров видео с наградой. Посмотрено "+v+" из "+f.ads+".",
+          btn:ready?"Забрать":v+" / "+f.ads,dis:!ready,on:()=>{own(f.id);save.frame=f.id;persist();applyFrame();toast("Рамка «"+f.name+"» твоя!")}}));return}
+      box.appendChild(item({id:"frame-"+f.id,ic:'<span class="swatch" style="background:'+f.col+';box-shadow:inset 0 0 0 5px '+f.edge+'"></span>',name:f.name,desc:eq?"Сейчас на игровом поле.":owned?"Уже в коллекции.":"Рамка для игрового поля.",
+        cls:owned?"":"coins",btn:eq?"Выбрана":owned?"Выбрать":f.price+" "+COIN,dis:eq,
+        on:()=>{if(!owned){if(!spend(f.price))return;own(f.id)}save.frame=f.id;persist();applyFrame();toast("Рамка «"+f.name+"» выбрана")}}))});
+  }
+}
+function applyFrame(){const f=FRAMES.find(x=>x.id===save.frame)||FRAMES[0];const el=$("frame");el.style.setProperty("--frame",f.col);el.style.setProperty("--frame-edge",f.edge);el.style.setProperty("--frame-knob",f.knob)}
+
+/* ---------- lucky wheel: 1 free spin a day + WHEEL_ADS for rewarded video ---------- */
+const wheelUsed=()=>save.wheel.d===today()?save.wheel.n:0;
+const chestN=()=>save.chest.d===today()?save.chest.n:0;
+let wheelRot=0,spinning=false;
+function drawWheel(){const cv=$("wheel-cv"),c=cv.getContext("2d"),R=300,n=WHEEL.length,a=2*Math.PI/n;c.clearRect(0,0,600,600);
+  WHEEL.forEach((p,i)=>{const a0=-Math.PI/2+i*a-a/2;c.beginPath();c.moveTo(R,R);c.arc(R,R,R,a0,a0+a);c.closePath();c.fillStyle=p.col;c.fill();c.strokeStyle="#9e2229";c.lineWidth=4;c.stroke();
+    const th=a0+a/2,left=Math.cos(th)<-1e-6;c.save();c.translate(R,R);c.rotate(left?th+Math.PI:th);c.textAlign=left?"left":"right";c.textBaseline="middle";
+    const dark=p.col==="#fff8f4"||p.col==="#eab04a";c.fillStyle=dark?"#3a2330":"#fff8f4";
+    const big=p.c!=null,sg=left?-1:1;c.font="900 "+(big?54:30)+"px Nunito,system-ui,sans-serif";c.fillText(p.t,sg*(R-30),0);
+    if(big){c.beginPath();c.arc(sg*(R-30-c.measureText(p.t).width-24),0,15,0,7);c.fillStyle="#eab04a";c.fill();c.strokeStyle="#c98a1f";c.lineWidth=3;c.stroke()}c.restore()})}
+function renderWheel(){const u=wheelUsed(),b=$("wheel-spin");
+  $("wheel-sub").textContent=u===0?"Сегодня одно вращение бесплатно.":u<=WHEEL_ADS?"Ещё вращений за рекламу сегодня: "+(WHEEL_ADS-u+1)+".":"На сегодня вращения закончились. Приходи завтра!";
+  b.disabled=spinning||u>WHEEL_ADS;b.innerHTML=u===0?"Крутить бесплатно":u<=WHEEL_ADS?'<span class="ad">РЕКЛАМА</span> Крутить ещё раз':"Приходи завтра"}
+function openWheel(){if(G&&!G.solved){pauseGame(true)}$("shop").hidden=true;drawWheel();$("wheel-cv").style.transform="rotate("+wheelRot+"deg)";renderWheel();$("wheel").hidden=false}
+function closeWheel(){if(spinning)return;$("wheel").hidden=true;if(!G)renderHome();else if(!modalOpen())resumeGame()}
+async function spinWheel(){
+  if(spinning)return;const u=wheelUsed();if(u>WHEEL_ADS)return;
+  if(u>0){$("wheel-spin").disabled=true;const ok=await P.rewarded();if(!ok){renderWheel();return}}
+  const t=today();if(save.wheel.d!==t)save.wheel={d:t,n:0};save.wheel.n++;persist();
+  const tot=WHEEL.reduce((s,p)=>s+p.w,0);let r=Math.random()*tot,k=0;for(;k<WHEEL.length-1;k++){r-=WHEEL[k].w;if(r<0)break}
+  const seg=360/WHEEL.length,jit=(Math.random()-.5)*seg*.6,target=360-k*seg+jit;
+  const cur=((wheelRot%360)+360)%360;wheelRot+=360*5+((target-cur+360)%360);
+  spinning=true;renderWheel();const cv=$("wheel-cv"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  cv.style.transition=reduce?"none":"transform 3.6s cubic-bezier(.17,.84,.25,1)";cv.style.transform="rotate("+wheelRot+"deg)";
+  setTimeout(()=>{spinning=false;const p=WHEEL[k];
+    if(p.c){save.coins+=p.c;toast("Выигрыш: +"+p.c+" монет")}else if(p.h){save.hints+=p.h;toast("Выигрыш: +"+p.h+" "+plural(p.h,"подсказка","подсказки","подсказок"))}else if(p.e){save.boost.edge+=p.e;toast("Выигрыш: бустер «Края»")}
+    if(p.c>=100||p.h>=3)confetti();persist(true);refreshWallet();renderWheel()},reduce?50:3700)}
+$("wheel-open").onclick=openWheel;$("wheel-spin").onclick=spinWheel;$("wheel-close").onclick=closeWheel;
+
+/* ---------- daily reward ---------- */
+function checkDaily(){
+  const t=today();if(save.daily.last===t||G||modalOpen())return;
+  const diff=save.daily.last?dayNum(t)-dayNum(save.daily.last):99;
+  const streak=diff===1?(save.daily.streak%7)+1:1,amt=DAILY[streak-1];
+  const d=$("days");d.innerHTML="";
+  DAILY.forEach((v,i)=>{const e=document.createElement("div");e.className="day"+(i+1<streak?" past":"")+(i+1===streak?" today":"");e.innerHTML="День "+(i+1)+"<b>"+v+"</b>";d.appendChild(e)});
+  $("dsub").textContent=streak>1?"Ты заходишь "+streak+" "+plural(streak,"день","дня","дней")+" подряд. Награда растёт с каждым днём.":"Заходи каждый день: на седьмой день ждёт сундук на 250 монет.";
+  $("dget").innerHTML="Забрать "+amt+" "+COIN;
+  $("dx2").innerHTML='<span class="ad">РЕКЛАМА</span> Забрать '+amt*2+" "+COIN;
+  const claim=m=>{save.daily={last:t,streak};$("daily").hidden=true;addCoins(amt*m);toast("+"+amt*m+" монет")};
+  $("dget").onclick=()=>claim(1);
+  $("dx2").onclick=async()=>{$("dx2").disabled=true;const ok=await P.rewarded();$("dx2").disabled=false;claim(ok?2:1)};
+  $("daily").hidden=false;
+}
+
+/* ---------- game ---------- */
+const board=$("board"),bc=board.getContext("2d");
+let G=null,raf=0,peek=false,timerId=0;
+function kick(){if(G&&!raf)raf=requestAnimationFrame(loop)}
+function sattolo(n){const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const elapsed=()=>G?G.acc+(G.paused?0:performance.now()-G.t0):0;
+const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+function pauseGame(p){if(!G||G.solved)return;if(p&&!G.paused){G.acc+=performance.now()-G.t0;G.paused=true}else if(!p&&G.paused){G.t0=performance.now();G.paused=false}}
+function resumeGame(){if(G&&!G.solved){pauseGame(false);P.start()}}
+function startGame(o){
+  let n,pi,boss=false,title,sub;
+  if(o.mode==="level"&&!lvOpen(o.k))return;
+  if(o.mode==="free"&&!picOpen(o.pi))return;
+  if(o.mode==="level"){const l=LV[o.k-1];n=l.n;pi=l.pic;boss=l.boss;title="Уровень "+l.k;sub=(boss?"Босс · ":"")+PICS[pi].name+" · "+n+"×"+n}
+  else{n=DIFFS[save.diff][1];pi=o.pi;title=PICS[pi].name;sub=DIFFS[save.diff][0]+" · "+n+"×"+n}
+  G={mode:o.mode,k:o.k,n,pi,boss,slots:sattolo(n*n),pos:[],moves:0,acc:0,t0:performance.now(),paused:false,drag:null,sel:-1,solved:false,reveal:0,flash:-1,flashT:0};
+  G.slots.forEach((tile,s)=>{G.pos[tile]={x:s%n,y:Math.floor(s/n)}});
+  ["home","winbox","offer","shop","daily"].forEach(id=>{$(id).hidden=true});$("game").hidden=false;
+  $("gname").textContent=title;$("gdiff").textContent=sub;$("moves").textContent="0";$("time").textContent="0:00";
+  applyFrame();sizeBoard();updProg();refreshWallet();
+  clearInterval(timerId);timerId=setInterval(tick,500);cancelAnimationFrame(raf);raf=0;kick();
+  P.start();P.banner();
+}
+function tick(){if(!G||G.solved)return;$("time").textContent=fmt(elapsed())}
+let B=300;
+function sizeBoard(){const st=$("stage").getBoundingClientRect();const fr=parseFloat(getComputedStyle($("frame")).paddingLeft)||10;B=Math.floor(Math.max(180,Math.min(st.width-2*fr-4,st.height-2*fr-4,1100)));
+  const dpr=window.devicePixelRatio||1;board.width=B*dpr;board.height=B*dpr;board.style.width=board.style.height=B+"px";bc.setTransform(dpr,0,0,dpr,0,0);kick()}
+let rzT=0;const onResize=()=>{clearTimeout(rzT);rzT=setTimeout(()=>{if(G)sizeBoard();P.banner()},60)};
+window.addEventListener("resize",onResize);
+if(window.ResizeObserver)new ResizeObserver(onResize).observe($("stage"));
+function updProg(){const n=G.n*G.n,ok=G.slots.filter((t,s)=>t===s).length;$("prog").style.width=(ok/n*100)+"%"}
+function loop(){
+  raf=0;if(!G)return;const n=G.n,cell=B/n,img=src(G.pi),sc=img.width/n;let busy=false;
+  bc.clearRect(0,0,B,B);
+  G.slots.forEach((tile,s)=>{const tx=s%n,ty=Math.floor(s/n),p=G.pos[tile],dx=tx-p.x,dy=ty-p.y;
+    if(Math.abs(dx)>.003||Math.abs(dy)>.003){p.x+=dx*.28;p.y+=dy*.28;busy=true}else{p.x=tx;p.y=ty}});
+  const drawTile=(tile,x,y,lift)=>{const sx=(tile%n)*sc,sy=Math.floor(tile/n)*sc,g=G.solved?0:1.2;
+    bc.save();if(lift){bc.shadowColor="rgba(58,35,48,.45)";bc.shadowBlur=18;bc.shadowOffsetY=6}
+    const sz=lift?cell*1.08:cell,off=(sz-cell)/2;
+    rr(bc,x-off+g,y-off+g,sz-2*g,sz-2*g,G.solved?0:Math.min(8,cell*.08));bc.fillStyle="#fff";bc.fill();bc.clip();
+    bc.drawImage(img,sx,sy,sc,sc,x-off+g,y-off+g,sz-2*g,sz-2*g);bc.restore()};
+  const dragTile=G.drag&&G.drag.moved?G.drag.tile:-1;
+  G.slots.forEach(tile=>{if(tile===dragTile)return;const p=G.pos[tile];drawTile(tile,p.x*cell,p.y*cell,false)});
+  const ring=(s,col)=>{bc.strokeStyle=col;bc.lineWidth=4;rr(bc,(s%n)*cell+2,Math.floor(s/n)*cell+2,cell-4,cell-4,8);bc.stroke()};
+  if(G.flash>=0){const t=(performance.now()-G.flashT)/900;if(t<1){bc.globalAlpha=1-t;ring(G.flash,"#eab04a");bc.globalAlpha=1;busy=true}else G.flash=-1}
+  if(G.sel>=0&&!G.drag)ring(G.sel,"#3f9e8a");
+  if(G.drag&&G.drag.moved){const h=hoverSlot(G.drag.px,G.drag.py);if(h>=0&&!locked(h))ring(h,"#eab04a");drawTile(G.drag.tile,G.drag.px-G.drag.ox,G.drag.py-G.drag.oy,true)}
+  if(G.solved&&G.reveal<1){G.reveal+=.03;busy=true;bc.fillStyle="rgba(255,248,244,"+(0.5*Math.sin(G.reveal*Math.PI))+")";bc.fillRect(0,0,B,B)}
+  if(peek){bc.globalAlpha=.92;bc.drawImage(img,0,0,B,B);bc.globalAlpha=1}
+  if(busy)raf=requestAnimationFrame(loop);
+}
+const locked=s=>G.slots[s]===s;
+function hoverSlot(x,y){const n=G.n,cell=B/n,cx=Math.floor(x/cell),cy=Math.floor(y/cell);if(cx<0||cy<0||cx>=n||cy>=n)return -1;return cy*n+cx}
+function pt(e){const r=board.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
+board.addEventListener("pointerdown",e=>{if(!G||G.solved)return;const[x,y]=pt(e),s=hoverSlot(x,y);if(s<0||locked(s))return;
+  const cell=B/G.n;board.setPointerCapture(e.pointerId);G.drag={from:s,tile:G.slots[s],px:x,py:y,sx:x,sy:y,ox:x-(s%G.n)*cell,oy:y-Math.floor(s/G.n)*cell,moved:false};kick()});
+board.addEventListener("pointermove",e=>{if(!G||!G.drag)return;const[x,y]=pt(e);G.drag.px=x;G.drag.py=y;if(Math.hypot(x-G.drag.sx,y-G.drag.sy)>6)G.drag.moved=true;kick()});
+board.addEventListener("pointerup",()=>{if(!G||!G.drag)return;const d=G.drag;G.drag=null;
+  if(d.moved){const t=hoverSlot(d.px,d.py),p=G.pos[d.tile],cell=B/G.n;p.x=(d.px-d.ox)/cell;p.y=(d.py-d.oy)/cell;if(t>=0&&t!==d.from&&!locked(t))swap(d.from,t);G.sel=-1}
+  else{if(G.sel<0)G.sel=d.from;else if(G.sel===d.from)G.sel=-1;else{swap(G.sel,d.from);G.sel=-1}}kick()});
+board.addEventListener("pointercancel",()=>{if(G){G.drag=null;kick()}});
+function swap(a,b){[G.slots[a],G.slots[b]]=[G.slots[b],G.slots[a]];G.moves++;$("moves").textContent=G.moves;updProg();if(G.slots.every((t,s)=>t===s))win()}
+function useHint(){
+  const wrong=[];G.slots.forEach((t,s)=>{if(t!==s)wrong.push(s)});if(!wrong.length)return;
+  const s=wrong[Math.random()*wrong.length|0],j=G.slots.indexOf(s);[G.slots[s],G.slots[j]]=[G.slots[j],G.slots[s]];
+  save.hints--;persist();refreshWallet();G.flash=s;G.flashT=performance.now();G.sel=-1;updProg();kick();
+  if(G.slots.every((t,i)=>t===i))win();
+}
+$("hint").onclick=()=>{if(!G||G.solved)return;if(save.hints>0)useHint();else openOffer()};
+function useEdges(){
+  const n=G.n;if(n<4){toast("«Края» работают на полях от 4×4");return}
+  const todo=[];for(let s=0;s<n*n;s++){const x=s%n,y=Math.floor(s/n);if((x===0||y===0||x===n-1||y===n-1)&&G.slots[s]!==s)todo.push(s)}
+  if(!todo.length){toast("Края уже собраны");return}
+  todo.forEach(s=>{const j=G.slots.indexOf(s);[G.slots[s],G.slots[j]]=[G.slots[j],G.slots[s]]});
+  save.boost.edge--;persist();refreshWallet();G.sel=-1;updProg();kick();toast("Края на месте");
+  if(G.slots.every((t,i)=>t===i))win();
+}
+$("edges").onclick=()=>{if(!G||G.solved)return;if(save.boost.edge>0)useEdges();else openEdgeOffer()};
+function openEdgeOffer(){
+  pauseGame(true);
+  const b=$("offer-body");b.innerHTML='<h2>Бустеры «Края» закончились</h2><p class="muted">«Края» ставят на место все кусочки по краю картинки и не тратят ходы.</p>';
+  const mk=(cls,html,fn)=>{const x=document.createElement("button");x.className="btn "+cls;x.innerHTML=html;x.onclick=fn;b.appendChild(x);return x};
+  const adb=mk("primary",'<span class="ad">РЕКЛАМА</span> +1 «Края»',async()=>{adb.disabled=true;const ok=await P.rewarded();adb.disabled=false;if(ok){save.boost.edge++;persist();refreshWallet();closeOffer();toast("+1 «Края»")}});
+  mk("gold","1 «Края» за 100 "+COIN,()=>{if(save.coins<100){closeOffer(true);openShop("coins");toast("Не хватает монет");return}spend(100);save.boost.edge++;persist();refreshWallet();closeOffer();toast("+1 «Края»")});
+  mk("","Открыть магазин",()=>{closeOffer(true);openShop("boost")});
+  mk("","Играть дальше",()=>closeOffer());
+  $("offer").hidden=false;
+}
+function openOffer(){
+  pauseGame(true);P.stop();
+  const b=$("offer-body");b.innerHTML='<h2>Подсказки закончились</h2><p class="muted">Подсказка ставит один кусочек на своё место и не тратит ходы.</p>';
+  const mk=(cls,html,fn)=>{const x=document.createElement("button");x.className="btn "+cls;x.innerHTML=html;x.onclick=fn;b.appendChild(x);return x};
+  const adb=mk("primary",'<span class="ad">РЕКЛАМА</span> +1 подсказка',async()=>{adb.disabled=true;const ok=await P.rewarded();adb.disabled=false;if(ok){save.hints++;persist();refreshWallet();closeOffer();toast("+1 подсказка")}});
+  mk("gold","3 подсказки за 60 "+COIN,()=>{if(save.coins<60){closeOffer(true);openShop("coins");toast("Не хватает монет");return}spend(60);save.hints+=3;persist();refreshWallet();closeOffer();toast("+3 подсказки")});
+  mk("","Открыть магазин",()=>{closeOffer(true);openShop("hints")});
+  mk("","Играть дальше",()=>closeOffer());
+  $("offer").hidden=false;
+}
+function closeOffer(keep){$("offer").hidden=true;if(!keep)resumeGame()}
+function win(){
+  G.solved=true;G.acc=elapsed();G.paused=true;P.stop();kick();
+  const opt=G.n*G.n-1,stars=G.moves<=Math.ceil(opt*1.1)+1?3:G.moves<=Math.ceil(opt*1.6)?2:1;
+  const base=Math.round(4+G.n*G.n*.6)*(G.boss?2:1);let c;
+  if(G.mode==="level"){const prev=save.lv[G.k]||0;
+    if(!prev)c=base+(stars-1)*Math.round(base*.3);
+    else c=Math.round(base*.25)+Math.max(0,stars-prev)*Math.round(base*.3);
+    save.lv[G.k]=Math.max(prev,stars);}
+  else{const arr=save.done[G.pi]||(save.done[G.pi]=[]);const first=!arr.includes(save.diff);if(first)arr.push(save.diff);c=Math.round(base*(first?.6:.2))}
+  G.x2=save.x2until>Date.now();if(G.x2)c*=2;
+  G.stars=stars;G.reward=c;save.coins+=c;save.wins++;persist(true);refreshWallet();P.leaderboard(totalStars());
+  setTimeout(showWin,700);
+}
+function showWin(){
+  if(!G)return;
+  $("wstars").innerHTML=[1,2,3].map(i=>'<i class="'+(i<=G.stars?"on":"")+'">★</i>').join("");
+  $("wreward").innerHTML="+"+G.reward+" "+COIN+(G.x2?'<span class="boostbadge">×2</span>':"");
+  $("wmoves").textContent=G.moves;$("wtime").textContent=fmt(G.acc);
+  $("wfname").textContent=PICS[G.pi].name;$("wfact").textContent=PICS[G.pi].fact;
+  const db=$("wdouble");db.disabled=false;db.hidden=false;db.innerHTML='<span class="ad">РЕКЛАМА</span> Удвоить: ещё +'+G.reward+" "+COIN;
+  $("wnext").textContent=G.mode==="level"?(G.k<LV.length?"Уровень "+(G.k+1)+" →":"К уровням"):"Следующий пазл →";
+  $("wint").textContent=G.stars===3?"Идеально!":G.stars===2?"Отлично!":"Собрано!";
+  $("winbox").hidden=false;confetti();
+}
+$("wdouble").onclick=async()=>{const db=$("wdouble");db.disabled=true;if(await P.rewarded()){addCoins(G.reward);$("wreward").innerHTML="+"+G.reward*2+" "+COIN;db.hidden=true;toast("Награда удвоена")}else db.disabled=false};
+function afterWin(fn){
+  $("winbox").hidden=true;
+  if(save.wins>=5&&!save.asked.review){P.review(fn);return}
+  if(save.wins>=3)P.interstitial(fn);else fn();
+}
+$("wnext").onclick=()=>afterWin(()=>{if(!G)return;if(G.mode==="level"){if(G.k<LV.length)startGame({mode:"level",k:G.k+1});else toMenu()}else {let q=-1;for(let d=1;d<PICS.length;d++){const i=(G.pi+d)%PICS.length;if(picOpen(i)){q=i;break}}if(q<0)toMenu();else startGame({mode:"free",pi:q})}});
+$("wmenu").onclick=()=>afterWin(toMenu);
+function toMenu(){clearInterval(timerId);cancelAnimationFrame(raf);raf=0;G=null;P.stop();P.banner();
+  ["game","winbox","offer"].forEach(id=>{$(id).hidden=true});$("home").hidden=false;renderHome();setTimeout(checkDaily,300)}
+$("back").onclick=toMenu;
+$("reshuffle").onclick=()=>{if(G)startGame({mode:G.mode,k:G.k,pi:G.pi})};
+const pk=$("peek");
+const setPeek=v=>{if(peek!==v){peek=v;kick()}};
+pk.addEventListener("pointerdown",()=>setPeek(true));["pointerup","pointerleave","pointercancel"].forEach(ev=>pk.addEventListener(ev,()=>setPeek(false)));
+pk.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")setPeek(true)});pk.addEventListener("keyup",()=>setPeek(false));
+pk.addEventListener("contextmenu",e=>e.preventDefault());
+document.addEventListener("visibilitychange",()=>{if(document.hidden){if(G&&!G.solved){pauseGame(true);P.stop()}}else if(!modalOpen())resumeGame()});
+
+/* ---------- confetti ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const cv=$("confetti"),c=cv.getContext("2d"),dp=Math.min(2,DPR());cv.width=innerWidth*dp;cv.height=innerHeight*dp;cv.style.width=innerWidth+"px";cv.style.height=innerHeight+"px";c.setTransform(dp,0,0,dp,0,0);
+  const cols=["#c8323a","#eab04a","#3f9e8a","#f6a6c1","#2f6fb3"];
+  const ps=[...Array(120)].map(()=>({x:innerWidth/2,y:innerHeight*.35,vx:(Math.random()-.5)*14,vy:-Math.random()*12-4,r:Math.random()*6.28,s:6+Math.random()*6,c:cols[Math.random()*5|0]}));
+  let f=0;(function step(){c.clearRect(0,0,innerWidth,innerHeight);ps.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.r+=.2;c.save();c.translate(p.x,p.y);c.rotate(p.r);c.fillStyle=p.c;c.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);c.restore()});
+    if(++f<150)requestAnimationFrame(step);else c.clearRect(0,0,innerWidth,innerHeight)})();
+}
+
+/* ---------- boot ---------- */
+/* ---------- Android hooks: system Back button, app pause/resume ---------- */
+window.__back=()=>{
+  if(!$("mockad").hidden)return true;
+  if(!$("mockpay").hidden){$("mockpay-no").click();return true}
+  if(!$("wheel").hidden){closeWheel();return true}
+  if(!$("offer").hidden){closeOffer();return true}
+  if(!$("shop").hidden){closeShop();return true}
+  if(!$("daily").hidden){$("daily").hidden=true;return true}
+  if(!$("winbox").hidden){$("wmenu").click();return true}
+  if(!$("game").hidden){toMenu();return true}
+  return false;
+};
+window.__pause=()=>{if(G&&!G.solved){pauseGame(true)}};
+window.__resume=()=>{if(!modalOpen())resumeGame();kick()};
+document.addEventListener("contextmenu",e=>e.preventDefault());
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&window.__back)window.__back()});
+
+loadLocal();
+const fontsReady=(document.fonts&&document.fonts.load)?Promise.race([Promise.all([document.fonts.load("40px 'Ma Shan Zheng'","福"),document.fonts.load("900 20px Nunito","Пекин")]),new Promise(r=>setTimeout(r,1200))]).catch(()=>{}):Promise.resolve();
+/* loading screen: native splash hands over right away, the bar follows real work (fonts, then menu thumbnails) */
+const TIPS=["<b>Совет:</b> нажми на два кусочка, чтобы поменять их местами.","<b>Совет:</b> зажми «Подсмотреть», чтобы увидеть всю картинку.",
+  "<b>Совет:</b> бустер «Края» собирает всю рамку пазла за одно нажатие.","<b>Совет:</b> чем меньше ходов, тем больше звёзд и монет.",
+  "<b>Совет:</b> колесо удачи каждый день крутится один раз бесплатно.","<b>Знаешь ли ты?</b> В Запретном городе почти 1000 зданий.",
+  "<b>Знаешь ли ты?</b> Храм Неба построен без единого гвоздя.","<b>Знаешь ли ты?</b> Хутунам Пекина больше 700 лет."];
+$("splash-tip").innerHTML=TIPS[Math.random()*TIPS.length|0];
+(async()=>{
+  /* the bar fills over at least MIN ms (smooth), but never runs ahead of the real loading work */
+  const t0=performance.now(),MIN=3200,bar=$("splash-bar");let real=.05,shown=0;
+  const set=v=>{real=v};
+  (function anim(){const t=Math.min(1,(performance.now()-t0)/MIN),e=1-Math.pow(1-t,2);shown=Math.max(shown,Math.min(real,.04+.96*e));
+    bar.style.width=(shown*100).toFixed(1)+"%";if(shown<1)requestAnimationFrame(anim)})();
+  const yieldFrame=()=>new Promise(r=>setTimeout(r,0));
+  set(.06);const booting=P.boot();await fontsReady;set(.14);await booting;set(.22);
+  const sizes=save.tab==="coll"?[300]:[112,88];
+  for(let i=0;i<PICS.length;i++){sizes.forEach(px=>thumbImg(i,px));set(.22+.7*(i+1)/PICS.length);if(i%2)await yieldFrame()}
+  renderHome();set(1);await P.preloader();
+  const left=MIN+250-(performance.now()-t0);if(left>0)await new Promise(r=>setTimeout(r,left));
+  const sp=$("splash");sp.classList.add("out");setTimeout(()=>{sp.hidden=true;P.ready()},460);
+  setTimeout(checkDaily,650);
+})();
+
+})();
+</script>
+
+</body></html>
