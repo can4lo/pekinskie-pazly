@@ -1058,10 +1058,12 @@ function refreshWallet(){const h=COIN+"<span>"+save.coins+"</span>";$("coins-pil
 const DEV=location.protocol==="file:"||/^(localhost|127\.|192\.168\.)/.test(location.hostname)||/[?&]test=1/.test(location.search);
 const P={sdk:null,mock:true,booted:false,cat:{},lastAd:0,started:false,
   async boot(){
-    await new Promise(res=>{let done=false;const fin=()=>{if(!done){done=true;res()}};
+    const FORCE_TEST=/[?&]test=1/.test(location.search);
+    if(!FORCE_TEST)await new Promise(res=>{let done=false;const fin=()=>{if(!done){done=true;res()}};
       try{const sc=document.createElement("script");sc.src="https://games.pikabu.ru/sdk/sdk.js";sc.async=true;sc.onload=fin;sc.onerror=fin;document.head.appendChild(sc)}catch(e){fin()}
       setTimeout(fin,5000)});
-    if(window.PkbSDK){try{this.sdk=await PkbSDK.init()}catch(e){this.sdk=null}}
+    /* outside Pikabu PkbSDK.init() never answers, so it gets a time limit: the game must never hang on the loading screen */
+    if(window.PkbSDK&&!FORCE_TEST){try{this.sdk=await Promise.race([PkbSDK.init(),new Promise(r=>setTimeout(()=>r(null),8000))])}catch(e){this.sdk=null}}
     this.mock=!this.sdk&&DEV;
     const sdk=this.sdk;
     if(sdk){
